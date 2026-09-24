@@ -1,0 +1,1340 @@
+/* RevDistrict's editorial layer: film, instrument, people, open road. */
+:root {
+  --accent: #d3b47d;
+  --ink: #f2eee7;
+}
+h1,
+h2,
+h3 {
+  font-optical-sizing: auto;
+}
+[data-sheen],
+h1 .gold,
+h2 .gold {
+  color: var(--accent);
+}
+@supports (background-clip: text) {
+  [data-sheen],
+  h1 .gold,
+  h2 .gold {
+    --sheen-position: 100%;
+    background: linear-gradient(
+      110deg,
+      #bd955a 0%,
+      #dec499 25%,
+      #bd955a 39%,
+      #fff1d0 46%,
+      #e8c997 50%,
+      #bd955a 58%,
+      #e6c994 78%,
+      #bd955a 100%
+    );
+    background-size: 260% 100%;
+    background-position: var(--sheen-position) 50%;
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+  }
+}
+.button--gold {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+.button--gold::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    110deg,
+    transparent 25%,
+    #fff5 50%,
+    transparent 75%
+  );
+  transform: translateX(-110%);
+  transition: transform 0.8s var(--ease);
+  z-index: -1;
+}
+.button--gold:hover::before {
+  transform: translateX(110%);
+}
+.brand-word {
+  font-family: var(--font-body);
+  letter-spacing: -0.06em;
+}
+.site-header--home {
+  padding-top: 10px;
+  height: 110px;
+  border-bottom: 0;
+}
+.site-header--home .brand {
+  gap: 16px;
+}
+.site-header--home .desktop-nav {
+  gap: 32px;
+}
+.site-header--home .header-contact {
+  font-size: 10px;
+}
+.menu-panel nav a {
+  text-transform: uppercase;
+  font-weight: 700;
+  font-family: var(--font-mono);
+  letter-spacing: -0.02em;
+  font-size: clamp(22px, 3vw, 36px);
+}
+.hero {
+  height: 100svh;
+  min-height: 790px;
+  max-height: 1100px;
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background: #080808;
+  --reel-progress: 0;
+}
+.hero-media {
+  position: absolute;
+  inset: 0;
+  z-index: -3;
+  background: url("/images/hero-film-poster.webp") center/cover;
+  transform-origin: center;
+}
+.hero-media video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.hero-shade {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  pointer-events: none;
+  background:
+    linear-gradient(90deg, #000d 0%, #000b 34%, #0008 49%, transparent 78%),
+    linear-gradient(0deg, #000d, transparent 29%, transparent 74%, #000c);
+}
+.hero-frame {
+  position: absolute;
+  inset: 0 var(--gutter);
+  border-right: 1px solid #fff2;
+  border-left: 1px solid #fff2;
+  z-index: -1;
+  pointer-events: none;
+}
+.hero-copy {
+  position: relative;
+  padding: clamp(180px, 24vh, 300px) calc(var(--gutter) + 58px) 190px;
+  width: fit-content;
+  max-width: 100%;
+}
+.hero-copy .eyebrow {
+  font-size: 9px;
+  letter-spacing: 0.15em;
+  margin-bottom: 28px;
+  color: #e6dbca;
+}
+.hero h1 {
+  font-size: clamp(68px, 7.3vw, 124px);
+  line-height: 0.96;
+  letter-spacing: -0.045em;
+  font-weight: 700;
+  text-wrap: initial;
+}
+.hero h1 [data-sheen] {
+  display: inline-block;
+  padding-right: 0.02em;
+}
+.hero-intro {
+  margin-top: 33px;
+  display: flex;
+  flex-direction: column;
+  gap: 29px;
+  align-items: flex-start;
+}
+.hero-intro p {
+  font-size: 14px;
+  color: #e3e0d9;
+  line-height: 1.85;
+}
+.hero-intro .button {
+  min-width: 227px;
+}
+.hero-side-note {
+  position: absolute;
+  right: calc(var(--gutter) + 21px);
+  top: 35%;
+  writing-mode: vertical-rl;
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  color: #e0dace;
+}
+.hero-bottom {
+  position: absolute;
+  bottom: 34px;
+  left: calc(var(--gutter) + 58px);
+  right: calc(var(--gutter) + 28px);
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 34px;
+}
+.hero-chapters {
+  display: flex;
+  gap: clamp(25px, 4.2vw, 70px);
+}
+.hero-chapters button {
+  position: relative;
+  text-align: left;
+  padding: 14px 0 0 17px;
+  color: #e6e2db;
+}
+.hero-chapters button:before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 15px;
+  bottom: 2px;
+  width: 1px;
+  background: #ffffff40;
+  transition: background 0.3s;
+}
+.hero-chapters button[aria-pressed="true"]:before {
+  background: var(--accent);
+  width: 2px;
+}
+.hero-chapters .mono {
+  display: block;
+  font-size: 7px;
+  color: #c4b9a7;
+  letter-spacing: 0.15em;
+  margin-bottom: 5px;
+}
+.hero-chapters strong {
+  text-transform: uppercase;
+  font-weight: 700;
+  font-family: var(--font-display);
+  font-size: clamp(14px, 1.35vw, 22px);
+  font-weight: 700;
+  line-height: 1.2;
+}
+.hero-chapters button[aria-pressed="true"] strong {
+  color: var(--accent);
+}
+.hero-film-controls {
+  display: flex;
+  gap: 26px;
+  align-items: center;
+  padding-bottom: 1px;
+}
+.hero-story-link {
+  min-height: 44px;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  font-size: 8px;
+}
+.hero-playback {
+  width: 48px;
+  height: 48px;
+  border: 1px solid #ffffff60;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  transition: background 0.25s;
+}
+.hero-playback:hover {
+  background: #ffffff20;
+}
+.hero-reel-progress {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  transform: scaleX(var(--reel-progress));
+  transform-origin: left;
+  background: var(--accent);
+}
+.brand-strip {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 30px;
+  padding: 40px var(--gutter);
+  border-bottom: 1px solid var(--line);
+}
+.brand-strip .mono {
+  font-size: 8px;
+  color: var(--muted);
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+.brand-strip p {
+  text-transform: uppercase;
+  font-weight: 700;
+  font-family: var(--font-display);
+  font-size: clamp(17px, 1.8vw, 28px);
+  line-height: 1.2;
+  letter-spacing: -0.035em;
+}
+.brand-strip p .gold {
+  color: var(--accent);
+}
+.inventory-feature {
+  position: relative;
+  overflow: hidden;
+  padding-top: 110px;
+  padding-bottom: 110px;
+  background: #080808;
+}
+.drive-heading {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  align-items: center;
+  min-height: 510px;
+}
+.drive-copy {
+  position: relative;
+  z-index: 2;
+}
+.drive-copy .eyebrow {
+  font-size: 9px;
+  margin-bottom: 27px;
+}
+.drive-copy h2 {
+  font-size: clamp(55px, 6.2vw, 102px);
+  line-height: 1;
+  letter-spacing: -0.05em;
+}
+.drive-copy > p:not(.eyebrow) {
+  font-size: 14px;
+  color: var(--muted);
+  line-height: 1.8;
+  margin-top: 29px;
+}
+.drive-caption {
+  display: inline-flex;
+  gap: 20px;
+  align-items: center;
+  font-size: 8px;
+  color: var(--accent);
+  margin-top: 36px;
+}
+.drive-caption:before {
+  content: "";
+  width: 36px;
+  height: 1px;
+  background: var(--accent);
+}
+.dial-stage {
+  position: relative;
+  width: 100%;
+  padding: 0 10px;
+  min-width: 0;
+}
+.dial-orbit {
+  width: 100%;
+  position: relative;
+}
+.drive-dial {
+  position: relative;
+  transform: perspective(1000px) rotateX(25deg) rotateY(-18deg) rotateZ(-14deg);
+  border-radius: 50%;
+  box-shadow:
+    22px 50px 40px -12px #000,
+    9px 12px 0 0 #181715;
+  background: radial-gradient(
+    ellipse at 40% 20%,
+    #35312b 0%,
+    #141414 35%,
+    #080808 68%
+  );
+}
+.drive-dial:after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  pointer-events: none;
+  background: linear-gradient(
+    140deg,
+    #fff2 0%,
+    transparent 25%,
+    transparent 55%,
+    #d3b47d0b 66%,
+    transparent 75%
+  );
+}
+.drive-dial svg {
+  width: 100%;
+  height: auto;
+  display: block;
+  overflow: visible;
+}
+.dial-outer {
+  stroke: #c2a575;
+  stroke-width: 1;
+  fill: none;
+}
+.dial-bezel {
+  stroke: #807257;
+  stroke-width: 2;
+  fill: none;
+}
+.dial-inner {
+  stroke: #35302a;
+  stroke-width: 1;
+  fill: none;
+}
+.dial-tick {
+  stroke: #8b8070;
+  stroke-width: 1;
+}
+.dial-major {
+  stroke: #eee0c4;
+  stroke-width: 2;
+}
+.dial-hot {
+  stroke: #c69456;
+  stroke-width: 2;
+}
+.dial-number {
+  fill: #e1d5c1;
+  font-family: var(--font-body);
+  font-size: 24px;
+  font-weight: 700;
+}
+.dial-brand {
+  fill: #b6a589;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 3px;
+}
+.dial-hand {
+  transition: transform 1.25s cubic-bezier(0.18, 0.7, 0.2, 1.1);
+}
+.dial-needle {
+  fill: #e4c082;
+}
+.dial-hub {
+  fill: #22201c;
+  stroke: #bd9c67;
+  stroke-width: 2;
+}
+.dial-hub-inner {
+  fill: #a0814e;
+}
+.dial-mode {
+  fill: #e4c082;
+  font-family: var(--font-mono);
+  font-size: 20px;
+  letter-spacing: 3px;
+}
+.dial-count {
+  fill: #ad9f87;
+  font-family: var(--font-mono);
+  font-size: 8px;
+  letter-spacing: 1.5px;
+}
+.dial-annotation {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 15px;
+  color: var(--accent);
+  font-size: 8px;
+  margin-top: 28px;
+  padding-right: 8%;
+}
+.dial-annotation i {
+  display: block;
+  width: 65px;
+  height: 1px;
+  background: var(--line-light);
+}
+.drive-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  border-bottom: 1px solid var(--line);
+  margin: 60px 0 34px;
+}
+.drive-tabs {
+  display: flex;
+  gap: 36px;
+}
+.drive-tabs button {
+  font-size: 14px;
+  padding: 18px 0;
+  position: relative;
+  white-space: nowrap;
+  color: var(--muted);
+}
+.drive-tabs button > span {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  vertical-align: super;
+  margin-left: 9px;
+  color: var(--muted);
+}
+.drive-tabs button[aria-pressed="true"] {
+  color: var(--accent);
+}
+.drive-tabs button:after {
+  content: "";
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.35s;
+}
+.drive-tabs button[aria-pressed="true"]:after {
+  transform: scaleX(1);
+}
+.drive-toolbar > .button {
+  font-size: 10px;
+  border: 0;
+}
+.featured-grid {
+  grid-template-columns: 1.18fr 1fr 1fr;
+  gap: 25px;
+  align-items: start;
+}
+.featured-grid .vehicle-card:nth-child(2) {
+  margin-top: 56px;
+}
+.featured-grid .vehicle-card:nth-child(3) {
+  margin-top: 112px;
+}
+.featured-grid .vehicle-card-image {
+  aspect-ratio: 1.13;
+}
+.featured-grid .vehicle-card h3 {
+  font-size: clamp(24px, 2.1vw, 34px);
+}
+.vehicle-card-image img {
+  filter: saturate(0.86);
+}
+.vehicle-card h3 {
+  font-family: var(--font-display);
+  font-size: 32px;
+  letter-spacing: -0.035em;
+  font-weight: 700;
+}
+.collection-empty {
+  color: var(--muted);
+  grid-column: 1/-1;
+  padding: 40px 0;
+}
+.inventory-feature .preview-note {
+  margin-top: 40px;
+}
+.story-section {
+  display: grid;
+  grid-template-columns: 0.9fr 1.1fr;
+  gap: 10%;
+  align-items: center;
+  padding-top: 140px;
+  padding-bottom: 160px;
+  background: var(--surface);
+  overflow: hidden;
+}
+.story-copy {
+  position: relative;
+  z-index: 1;
+}
+.story-copy h2 {
+  font-size: clamp(46px, 5.2vw, 82px);
+  margin-bottom: 36px;
+  line-height: 1.02;
+}
+.story-copy > p:not(.eyebrow) {
+  font-size: 14px;
+  color: var(--muted);
+  max-width: 355px;
+  line-height: 1.9;
+}
+.story-copy .button {
+  margin-top: 25px;
+}
+.story-coordinate {
+  display: block;
+  margin-top: 55px;
+  color: #9c968b;
+  font-size: 9px;
+}
+.story-film-wrap {
+  position: relative;
+  padding: 0 0 65px 40px;
+}
+.story-film-wrap:before {
+  content: "";
+  position: absolute;
+  inset: -30px 28px 105px 10px;
+  border: 1px solid #5d5039;
+}
+.story-film-wrap > .film-card {
+  aspect-ratio: 0.86;
+}
+.story-inset {
+  position: absolute;
+  left: auto;
+  right: -20px;
+  top: -36px;
+  width: 46%;
+  transform: rotate(6deg);
+  border: 7px solid var(--surface);
+  box-shadow: 12px 20px 36px #0008;
+  background: var(--surface);
+}
+.story-inset img {
+  width: 100%;
+  aspect-ratio: 1.55;
+  object-fit: cover;
+}
+.story-inset .mono {
+  display: block;
+  font-size: 6px;
+  padding: 10px 3px 3px;
+  color: var(--muted);
+}
+.film-edge-label {
+  display: block;
+  text-align: right;
+  font-size: 8px;
+  color: var(--accent);
+  padding-top: 22px;
+  letter-spacing: 0.12em;
+}
+.film-caption strong {
+  text-transform: uppercase;
+  font-weight: 700;
+  font-family: var(--font-display);
+  font-size: 32px;
+  font-weight: 700;
+  letter-spacing: -0.04em;
+}
+.film-play {
+  width: 82px;
+  height: 82px;
+  background: #0003;
+  backdrop-filter: blur(4px);
+}
+.paths-section {
+  padding-top: 130px;
+  padding-bottom: 140px;
+}
+.paths-intro {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 40px;
+  margin-bottom: 65px;
+}
+.paths-intro h2 {
+  font-size: clamp(42px, 4.5vw, 72px);
+}
+.paths-intro > p {
+  color: var(--muted);
+  font-size: 13px;
+  max-width: 260px;
+  padding-bottom: 7px;
+}
+.path-list {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 26px;
+}
+.path-row {
+  display: block;
+  min-width: 0;
+}
+.path-row:nth-child(2) {
+  padding-top: 65px;
+}
+.path-row:nth-child(3) {
+  padding-top: 130px;
+}
+.path-visual {
+  position: relative;
+  aspect-ratio: 0.97;
+  overflow: hidden;
+  background: var(--surface);
+}
+.path-visual:after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(0deg, #0009, transparent 50%);
+}
+.path-visual img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 1s var(--ease);
+  filter: saturate(0.7);
+}
+.path-visual > .mono {
+  position: absolute;
+  bottom: 24px;
+  left: 24px;
+  right: 24px;
+  font-size: 7px;
+  color: #e2d7c5;
+  z-index: 1;
+}
+.path-visual > svg {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  color: var(--ink);
+  width: 44px;
+  height: 44px;
+  padding: 10px;
+  border: 1px solid #fff5;
+  border-radius: 50%;
+  background: #0004;
+  z-index: 1;
+  transition: transform 0.4s;
+}
+.path-copy {
+  padding-top: 26px;
+}
+.path-copy h3 {
+  font-size: clamp(27px, 2.5vw, 38px);
+  margin-bottom: 14px;
+}
+.path-copy p {
+  font-size: 13px;
+  color: var(--muted);
+  max-width: 320px;
+  line-height: 1.85;
+}
+.path-label {
+  display: inline-block;
+  font-size: 8px;
+  color: var(--accent);
+  margin-top: 23px;
+  border-bottom: 1px solid #5d5039;
+  padding-bottom: 10px;
+}
+.path-row:hover .path-visual img {
+  transform: scale(1.07);
+}
+.path-row:hover .path-visual > svg {
+  transform: rotate(45deg);
+}
+.visit-section {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: 1.25fr 1fr;
+  align-items: end;
+  gap: 12%;
+  min-height: 650px;
+  padding-top: 120px;
+  padding-bottom: 110px;
+  background: #0b0b0b;
+}
+.visit-backdrop {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  overflow: hidden;
+}
+.visit-backdrop img {
+  width: 100%;
+  height: 112%;
+  object-fit: cover;
+  object-position: center 60%;
+  filter: saturate(0.45);
+}
+.visit-section:before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(90deg, #080808e8, #080808b0 50%, #080808b0),
+    linear-gradient(0deg, #080808, transparent 70%);
+  z-index: -1;
+}
+.visit-title .eyebrow {
+  font-size: 8px;
+  color: #dac5a3;
+}
+.visit-title h2 {
+  font-size: clamp(43px, 4.3vw, 70px);
+  line-height: 1.03;
+  margin-bottom: 36px;
+}
+.visit-info {
+  padding-top: 35px;
+  border-top: 1px solid #ffffff45;
+  padding-bottom: 5px;
+}
+.visit-info > .mono {
+  font-size: 8px;
+  color: var(--accent);
+  display: block;
+  margin-bottom: 22px;
+}
+.visit-info > a:first-of-type {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  font-family: var(--font-display);
+  font-size: 33px;
+  line-height: 1.2;
+  margin-bottom: 25px;
+}
+.visit-info > a:first-of-type svg {
+  color: var(--accent);
+}
+.visit-hours {
+  border-top: 1px solid #ffffff30;
+  padding-top: 20px;
+  font-size: 11px;
+  color: #c3bfb7;
+}
+.visit-hours p {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+.visit-hours p + p {
+  margin-top: 10px;
+}
+.visit-phone {
+  display: inline-block;
+  font-size: 20px;
+  margin-top: 24px;
+  color: var(--accent);
+}
+.inventory-page-heading h1 {
+  font-size: clamp(66px, 7.8vw, 126px);
+}
+.vehicle-title-band h1 {
+  font-size: clamp(52px, 5.4vw, 88px);
+}
+.vehicle-title-band h1 > span {
+  font-family: var(--font-body);
+  font-size: 18px;
+  letter-spacing: -0.02em;
+  margin-top: 18px;
+}
+.vehicle-overview h2,
+.vehicle-inquiry h2 {
+  font-size: clamp(42px, 4.5vw, 70px);
+}
+.payment-calculator h3 {
+  font-size: 36px;
+}
+.purchase-panel h3 {
+  font-size: 34px;
+}
+.finance-hero h1,
+.story-page-hero h1 {
+  font-size: clamp(52px, 5.1vw, 82px);
+}
+.finance-hero {
+  background: radial-gradient(ellipse at 84% 0%, #29231944, transparent 60%);
+}
+.calculator {
+  border-top-color: #b79965;
+}
+.contact-intro h1 {
+  font-size: clamp(70px, 7.6vw, 116px);
+}
+.story-wide-film .film-card {
+  border-bottom: 1px solid var(--accent);
+}
+.manifesto article h2,
+.people-section h2 {
+  font-size: clamp(41px, 3.7vw, 60px);
+}
+.faq-section h2 {
+  font-size: clamp(42px, 3.6vw, 60px);
+}
+.footer-brand {
+  font-family: var(--font-body);
+}
+@media (min-width: 1700px) {
+  .drive-heading {
+    min-height: 610px;
+  }
+}
+@media (max-width: 1100px) {
+  .hero-copy {
+    padding-left: calc(var(--gutter) + 30px);
+  }
+  .hero-bottom {
+    left: calc(var(--gutter) + 30px);
+  }
+  .hero-film-controls .hero-story-link {
+    display: none;
+  }
+  .hero-chapters {
+    gap: 25px;
+  }
+  .drive-heading {
+    min-height: 440px;
+  }
+  .drive-copy h2 {
+    font-size: 62px;
+  }
+  .dial-stage {
+    padding: 0;
+  }
+  .featured-grid {
+    gap: 18px;
+  }
+  .featured-grid .vehicle-card-bottom {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  .story-section {
+    gap: 7%;
+    padding-top: 110px;
+    padding-bottom: 110px;
+  }
+  .story-film-wrap {
+    padding-left: 0;
+  }
+  .story-inset {
+    right: -10px;
+  }
+  .path-list {
+    gap: 20px;
+  }
+  .path-visual > .mono {
+    left: 15px;
+    right: 15px;
+    font-size: 6px;
+  }
+  .visit-section {
+    gap: 7%;
+  }
+  .brand-strip > .mono:last-child {
+    display: none;
+  }
+}
+@media (max-width: 700px) {
+  .site-header--home {
+    height: 86px;
+    padding-top: 0;
+  }
+  .site-header--home .brand {
+    gap: 10px;
+  }
+  .hero {
+    min-height: 770px;
+    height: 100svh;
+    max-height: 950px;
+  }
+  .hero-frame {
+    inset: 0 14px;
+  }
+  .hero-media video {
+    object-position: 55% center;
+  }
+  .hero-shade {
+    background:
+      linear-gradient(90deg, #0008, #0002 80%),
+      linear-gradient(0deg, #000d, transparent 45%, #0009 83%);
+  }
+  .hero-copy {
+    padding: 180px 32px 190px;
+    width: 100%;
+  }
+  .hero-copy .eyebrow {
+    font-size: 7px;
+    margin-bottom: 25px;
+    letter-spacing: 0.13em;
+  }
+  .hero h1 {
+    font-size: clamp(42px, 10.7vw, 72px);
+    line-height: 1;
+    letter-spacing: -0.05em;
+  }
+  .hero-intro {
+    margin-top: 24px;
+    gap: 27px;
+  }
+  .hero-intro p {
+    max-width: 280px;
+    font-size: 12px;
+  }
+  .hero-intro p br {
+    display: none;
+  }
+  .hero-intro .button {
+    min-width: 207px;
+  }
+  .hero-side-note {
+    right: 24px;
+    top: auto;
+    bottom: 192px;
+    font-size: 7px;
+  }
+  .hero-bottom {
+    bottom: 28px;
+    left: 32px;
+    right: 30px;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+  .hero-chapters {
+    width: 100%;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  .hero-chapters button {
+    min-height: 44px;
+    padding: 8px 0 8px 10px;
+  }
+  .hero-chapters button:before {
+    top: 10px;
+    bottom: 10px;
+  }
+  .hero-chapters .mono {
+    display: none;
+  }
+  .hero-chapters strong {
+    text-transform: uppercase;
+    font-weight: 700;
+    font-size: 11px;
+    white-space: nowrap;
+  }
+  .hero-film-controls {
+    width: 100%;
+    justify-content: space-between;
+    gap: 20px;
+  }
+  .hero-film-controls .hero-story-link {
+    display: flex;
+    font-size: 9px;
+  }
+  .hero-playback {
+    width: 44px;
+    height: 44px;
+  }
+  .brand-strip {
+    padding: 32px var(--gutter);
+    gap: 12px;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .brand-strip .mono {
+    font-size: 7px;
+  }
+  .brand-strip p {
+    text-transform: uppercase;
+    font-weight: 700;
+    font-size: 27px;
+  }
+  .inventory-feature {
+    padding-top: 65px;
+    padding-bottom: 75px;
+  }
+  .drive-heading {
+    grid-template-columns: 1fr;
+    gap: 38px;
+    min-height: 0;
+  }
+  .drive-copy .eyebrow {
+    font-size: 7px;
+    margin-bottom: 23px;
+  }
+  .drive-copy h2 {
+    font-size: clamp(43px, 12.2vw, 80px);
+  }
+  .drive-copy > p:not(.eyebrow) {
+    font-size: 12px;
+    margin-top: 23px;
+  }
+  .drive-caption {
+    display: none;
+  }
+  .dial-stage {
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 0 5%;
+  }
+  .drive-dial {
+    transform: perspective(800px) rotateX(28deg) rotateY(-15deg) rotateZ(-14deg);
+  }
+  .dial-annotation {
+    font-size: 7px;
+    margin-top: 15px;
+  }
+  .drive-toolbar {
+    margin: 38px 0 28px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    border: 0;
+  }
+  .drive-tabs {
+    width: 100%;
+    justify-content: space-between;
+    gap: 12px;
+    border-bottom: 1px solid var(--line);
+  }
+  .drive-tabs button {
+    font-size: 10px;
+    padding: 15px 0;
+  }
+  .drive-tabs button > span {
+    font-size: 6px;
+    margin-left: 3px;
+  }
+  .drive-toolbar > .button {
+    align-self: flex-end;
+    font-size: 8px;
+  }
+  .featured-grid {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    width: calc(100% + 2 * var(--gutter));
+    margin-left: calc(-1 * var(--gutter));
+    padding: 0 var(--gutter) 18px;
+    gap: 18px;
+    scrollbar-width: thin;
+    scrollbar-color: var(--accent) var(--surface);
+  }
+  .featured-grid .vehicle-card {
+    flex: 0 0 88%;
+    min-width: 0;
+    scroll-snap-align: center;
+  }
+  .featured-grid .vehicle-card:nth-child(2),
+  .featured-grid .vehicle-card:nth-child(3) {
+    margin-top: 0;
+  }
+  .featured-grid .vehicle-card-image {
+    aspect-ratio: 1.1;
+  }
+  .featured-grid .vehicle-card h3 {
+    font-size: 34px;
+  }
+  .featured-grid .vehicle-card-bottom {
+    flex-direction: row;
+    align-items: center;
+    gap: 8px;
+  }
+  .inventory-feature .preview-note {
+    margin-top: 24px;
+    font-size: 8px;
+  }
+  .story-section {
+    grid-template-columns: 1fr;
+    gap: 65px;
+    padding-top: 75px;
+    padding-bottom: 70px;
+  }
+  .story-copy h2 {
+    font-size: clamp(42px, 10.8vw, 70px);
+    margin-bottom: 27px;
+  }
+  .story-copy > p:not(.eyebrow) {
+    font-size: 13px;
+    max-width: 390px;
+  }
+  .story-coordinate {
+    margin-top: 26px;
+    font-size: 8px;
+  }
+  .story-film-wrap {
+    padding: 0 0 66px 15px;
+    margin-left: 5px;
+  }
+  .story-film-wrap:before {
+    inset: -18px 18px 100px 0;
+  }
+  .story-film-wrap > .film-card {
+    aspect-ratio: 0.88;
+  }
+  .story-inset {
+    left: auto;
+    right: -6px;
+    top: -25px;
+    width: 42%;
+    border-width: 5px;
+  }
+  .story-inset .mono {
+    font-size: 5px;
+  }
+  .film-caption strong {
+    text-transform: uppercase;
+    font-weight: 700;
+    font-size: 39px;
+  }
+  .film-edge-label {
+    font-size: 6px;
+  }
+  .paths-section {
+    padding-top: 75px;
+    padding-bottom: 75px;
+  }
+  .paths-intro {
+    display: block;
+    margin-bottom: 40px;
+  }
+  .paths-intro h2 {
+    font-size: clamp(37px, 9.2vw, 60px);
+  }
+  .paths-intro > p {
+    margin-top: 25px;
+    font-size: 12px;
+  }
+  .path-list {
+    grid-template-columns: 1fr;
+    gap: 45px;
+  }
+  .path-row:nth-child(2),
+  .path-row:nth-child(3) {
+    padding-top: 0;
+  }
+  .path-row:nth-child(2) {
+    padding-left: 30px;
+  }
+  .path-row:nth-child(3) {
+    padding-right: 30px;
+  }
+  .path-visual {
+    aspect-ratio: 1.16;
+  }
+  .path-visual > .mono {
+    font-size: 6px;
+    bottom: 20px;
+  }
+  .path-copy {
+    padding-top: 20px;
+  }
+  .path-copy h3 {
+    font-size: 39px;
+  }
+  .path-copy p {
+    font-size: 12px;
+  }
+  .path-label {
+    font-size: 7px;
+    margin-top: 18px;
+  }
+  .visit-section {
+    grid-template-columns: 1fr;
+    gap: 60px;
+    min-height: 0;
+    padding-top: 90px;
+    padding-bottom: 75px;
+  }
+  .visit-backdrop img {
+    object-position: 65% center;
+  }
+  .visit-section:before {
+    background: linear-gradient(0deg, #080808 5%, #080808b0 70%, #08080880);
+  }
+  .visit-title h2 {
+    font-size: clamp(37px, 9.7vw, 62px);
+    margin-bottom: 30px;
+  }
+  .visit-title .eyebrow {
+    font-size: 6px;
+  }
+  .visit-info {
+    padding-top: 27px;
+  }
+  .visit-info > a:first-of-type {
+    font-size: 31px;
+  }
+  .visit-hours {
+    font-size: 10px;
+  }
+  .inventory-page-heading h1 {
+    font-size: 65px;
+  }
+  .vehicle-title-band h1 {
+    font-size: 48px;
+  }
+  .vehicle-title-band h1 > span {
+    font-size: 15px;
+    margin-top: 15px;
+  }
+  .finance-hero h1,
+  .story-page-hero h1 {
+    font-size: clamp(43px, 10.7vw, 64px);
+  }
+  .contact-intro h1 {
+    font-size: 64px;
+  }
+  .manifesto article h2,
+  .people-section h2 {
+    font-size: 38px;
+  }
+  .faq-section h2 {
+    font-size: 38px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-media,
+  .hero-copy,
+  .hero-side-note,
+  .dial-orbit {
+    transform: none !important;
+  }
+  .dial-hand {
+    transition: none;
+  }
+  [data-sheen],
+  h1 .gold,
+  h2 .gold {
+    background-position: 45% 50%;
+  }
+  .button--gold::before {
+    display: none;
+  }
+}
+@media (max-width: 370px) {
+  .hero-copy {
+    padding-left: 29px;
+    padding-right: 25px;
+  }
+  .hero h1 {
+    font-size: 39px;
+  }
+  .hero-chapters strong {
+    text-transform: uppercase;
+    font-weight: 700;
+    font-size: 10px;
+  }
+  .brand-strip p {
+    text-transform: uppercase;
+    font-weight: 700;
+    font-size: 24px;
+  }
+  .drive-tabs {
+    gap: 10px;
+  }
+  .drive-tabs button {
+    font-size: 9px;
+  }
+}
+
+.map-location strong {
+  text-transform: uppercase;
+  font-weight: 700;
+  font-family: var(--font-display);
+}

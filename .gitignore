@@ -1,0 +1,50 @@
+# Dependencies and local caches
+node_modules/
+.npm/
+.cache/
+.turbo/
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# Generated Next.js and TypeScript files
+.next/
+out/
+/build/
+/dist/
+next-env.d.ts
+*.tsbuildinfo
+
+# Environment values and local credentials
+.env*
+!.env.example
+.vercel/
+.netlify/
+*.pem
+*.key
+*.p12
+*.pfx
+
+# Private research, original footage, and review captures
+/research/
+
+# Test output and logs
+coverage/
+.nyc_output/
+test-results/
+playwright-report/
+blob-report/
+playwright/.cache/
+*.log
+
+# Editor and OS files
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+._*
+Thumbs.db
+Desktop.ini
