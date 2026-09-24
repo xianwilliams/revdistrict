@@ -10,16 +10,27 @@ Private screenshots and raw media remain in the ignored `research/source-media/`
 
 | Existing page | New page | Treatment |
 |---|---|---|
-| `/`, `/home` | `/` | Layered cinematic hero, drive-style selection, owner video, routes to buy/finance/trade and visit |
+| `/`, `/home` | `/` | Layered cinematic hero, prominent inventory/financing/consignment routes, drive-style selection, owner video and visit |
 | `/inventory` | `/inventory` | Search, body/make/budget/style filters, sort, pagination, saved vehicles |
 | `/inventory/<slug>/<id>` | Same route pattern | Full-width gallery, keyboard lightbox, original facts/history, calculator, inquiry/test drive, related vehicles |
-| `/financing` | `/financing` | Budget calculator, clear process and FAQs, existing secure application handoff |
+| `/financing` | `/financing` and `/financing/apply` | Budget calculator, credit-range explanations, native individual/joint application with conditional history and dedicated delivery adapter |
+| Application authorizations | `/financing/terms` | On-site credit authorization information; dealer/provider review required before enabling submission |
 | `/sell-your-vehicle` | Same | Vehicle and contact fields, valuation process and honest submission state |
 | `/contact-us` | Same | Contact form, existing public channels, hours and map |
+| Global Text Us form | `/contact-us/text` | First/last name, phone, message and explicit text consent; uses the general lead relay |
 | `/privacy-policy` | Same | Updated notice reflecting actual build behavior |
 | New | `/our-story` | Rebrand story, transparent logo reveal and two replaceable video slots |
+| New client request | `/consignment` | Process, photo carousel, vehicle/contact form and FAQs; terms agreed with the dealer |
 
 The source site navigation, footer, contact fields, trade form and financing field groups were inspected. No additional public content pages were found in that navigation. Unknown and inactive vehicle routes use the designed not-found page.
+
+The September 24 re-audit also inspected the financing form script, vehicle inquiry controls and Text Us modal. Application links no longer navigate to the old website. CARFAX, maps and social links remain intentional third-party destinations. Production lead and credit delivery still require approved provider connections; on-site page parity is not a claim that these are connected.
+
+## September 24 client feedback
+
+The supplied screenshot asks for prominent homepage inventory, financing from great credit through buy here, pay here, and professional consignment. Those three routes now come immediately after the hero/brand strip. Selling directly and trading remain separately available. Consignment copy explains the service without inventing fees, guaranteed prices or timelines; financing copy avoids guaranteed approval or terms.
+
+The shared accent is now richer logo-inspired gold (`#e5aa3d`), with warmer highlights in the existing scroll sheen. Desktop hero heights, section spacing, the driving-style stage, service card images and visit section were tightened. The accepted uppercase Inter/IBM Plex Mono system, black/charcoal surfaces, original footage, motion and DMS boundary remain.
 
 ## Source facts
 

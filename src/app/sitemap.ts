@@ -11,8 +11,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       "/inventory",
       "/our-story",
       "/financing",
+      "/financing/terms",
+      "/consignment",
       "/sell-your-vehicle",
       "/contact-us",
+      "/contact-us/text",
       "/privacy-policy",
     ].map((path) => ({ url: base + path })),
     ...(!data.isPreview

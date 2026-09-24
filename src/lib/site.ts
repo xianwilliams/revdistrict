@@ -12,9 +12,10 @@ export const site = {
 };
 export const navigation = [
   { href: "/inventory", label: "Inventory" },
-  { href: "/our-story", label: "The District" },
   { href: "/financing", label: "Financing" },
+  { href: "/consignment", label: "Consignment" },
   { href: "/sell-your-vehicle", label: "Sell / Trade" },
+  { href: "/our-story", label: "The District" },
 ];
 export const money = (value: number) =>
   new Intl.NumberFormat("en-US", {

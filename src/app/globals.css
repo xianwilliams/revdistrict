@@ -4,7 +4,7 @@
   --surface-raised: #1b1b1b;
   --ink: #f2f0e9;
   --muted: #aaa7a0;
-  --accent: #d0b47c;
+  --accent: #e5aa3d;
   --accent-ink: #12100b;
   --line: #2c2c2c;
   --line-light: #484848;
@@ -12,7 +12,7 @@
   --font-body: var(--font-inter), Arial, sans-serif;
   --font-mono: "IBM Plex Mono", monospace;
   --gutter: clamp(24px, 4.8vw, 88px);
-  --section: clamp(64px, 7.5vw, 128px);
+  --section: clamp(64px, 5.8vw, 96px);
   --ease: cubic-bezier(0.23, 1, 0.32, 1);
   --header: 96px;
   --radius: 2px;

@@ -6,6 +6,7 @@ import "@fontsource/ibm-plex-mono/700.css";
 import "./globals.css";
 import "./editorial.css";
 import "./atmosphere.css";
+import "./services.css";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { Motion } from "@/components/motion";

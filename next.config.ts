@@ -9,6 +9,13 @@ const config: NextConfig = {
   async redirects() {
     return [
       { source: "/home", destination: "/", permanent: true },
+      { source: "/apply", destination: "/financing/apply", permanent: true },
+      {
+        source: "/credit-application",
+        destination: "/financing/apply",
+        permanent: true,
+      },
+      { source: "/text-us", destination: "/contact-us/text", permanent: true },
       { source: "/contact", destination: "/contact-us", permanent: true },
       {
         source: "/trade-in",
@@ -33,6 +40,13 @@ const config: NextConfig = {
             key: "Strict-Transport-Security",
             value: "max-age=31536000; includeSubDomains",
           },
+        ],
+      },
+      {
+        source: "/financing/apply",
+        headers: [
+          { key: "Cache-Control", value: "private, no-store" },
+          { key: "Referrer-Policy", value: "no-referrer" },
         ],
       },
     ];

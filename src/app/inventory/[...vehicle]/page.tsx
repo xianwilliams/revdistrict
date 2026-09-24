@@ -184,17 +184,21 @@ export default async function VehiclePage({ params }: Props) {
                 <Phone size={17} />
                 Call the team
               </a>
-              <a href={site.smsHref}>
+              <Link href="/contact-us/text">
                 <MessageSquare size={17} />
                 Text us
-              </a>
+              </Link>
             </div>
             <span className="small muted">
               MIDVALE, UTAH · MON–SAT 10AM–7PM
             </span>
           </div>
           <section id="payment">
-            <PaymentCalculator price={v.price || 30000} compact />
+            <PaymentCalculator
+              price={v.price || 30000}
+              vehicleId={v.id}
+              compact
+            />
           </section>
           <Link href="/sell-your-vehicle" className="trade-prompt">
             <div>

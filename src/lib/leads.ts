@@ -4,7 +4,15 @@ export const leadSchema = z
   .object({
     firstName: text.min(1),
     lastName: text.min(1),
-    email: z.string().trim().email().max(254),
+    email: z
+      .string()
+      .trim()
+      .max(254)
+      .refine(
+        (value) => !value || z.email().safeParse(value).success,
+        "Enter a valid email address",
+      )
+      .default(""),
     phone: z
       .string()
       .trim()
@@ -16,7 +24,14 @@ export const leadSchema = z
         "Enter a valid phone number",
       ),
     message: z.string().trim().min(5).max(4000),
-    intent: z.enum(["contact", "availability", "test-drive", "trade"]),
+    intent: z.enum([
+      "contact",
+      "availability",
+      "test-drive",
+      "trade",
+      "consignment",
+      "text",
+    ]),
     consent: z.literal(true),
     textConsent: z.boolean().default(false),
     website: z.string().max(200).default(""),
@@ -41,7 +56,15 @@ export const leadSchema = z
       })
       .optional(),
   })
-  .refine((v) => v.intent !== "trade" || !!v.trade, {
+  .refine((v) => v.intent === "text" || Boolean(v.email), {
+    message: "Enter your email address.",
+    path: ["email"],
+  })
+  .refine((v) => v.intent !== "text" || v.textConsent, {
+    message: "Consent to text is required for a text request.",
+    path: ["textConsent"],
+  })
+  .refine((v) => !["trade", "consignment"].includes(v.intent) || !!v.trade, {
     message: "Vehicle details are required for a valuation.",
     path: ["trade"],
   })

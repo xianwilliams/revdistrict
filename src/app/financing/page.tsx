@@ -1,21 +1,11 @@
 import type { Metadata } from "next";
-import {
-  ArrowUpRight,
-  LockKeyhole,
-  Plus,
-  CarFront,
-  FileCheck2,
-  Calculator,
-} from "lucide-react";
+import { Plus, CarFront, FileCheck2, Calculator } from "lucide-react";
 import { AmbientFilm } from "@/components/ambient-film";
 import { PaymentCalculator } from "@/components/payment-calculator";
 import { ButtonLink } from "@/components/ui";
 import { site } from "@/lib/site";
 export const metadata: Metadata = { title: "Financing your next chapter" };
 export default function FinancingPage() {
-  const application =
-    process.env.FINANCE_APPLICATION_URL ||
-    "https://www.utahusedcarfactory.com/financing";
   return (
     <>
       <section className="finance-hero section" data-motion-section>
@@ -33,27 +23,66 @@ export default function FinancingPage() {
             <span className="gold">A plan that fits.</span>
           </h1>
           <p>
-            Let’s bring the possibilities into focus. Explore a monthly payment,
-            ask us about financing, and take the next step when you’re ready.
+            Great credit, a fresh start, or somewhere in between. We offer
+            financing options through buy here, pay here. Let’s find the path
+            that fits your situation.
           </p>
-          <a
-            className="button button--gold"
-            href={application}
-            target="_blank"
-            rel="noreferrer"
-          >
-            <span>Start your application</span>
-            <ArrowUpRight size={18} />
-          </a>
+          <ButtonLink href="/financing/apply">
+            Start your application
+          </ButtonLink>
           <p className="secure-note">
-            <LockKeyhole size={14} /> Opens our secure dealer-hosted application
-          </p>
-          <p className="small muted">
-            You may see The Used Car Factory name while our rebrand is in
-            progress.
+            Apply right here. Individual and joint applications.
           </p>
         </div>
         <PaymentCalculator />
+      </section>
+      <section className="finance-options section" data-motion-section>
+        <div className="section-heading">
+          <div>
+            <p className="eyebrow">MORE THAN ONE WAY FORWARD</p>
+            <h2>
+              Different credit.
+              <br />
+              <span className="gold">Real options.</span>
+            </h2>
+          </div>
+          <p>
+            Tell us where you are today.
+            <br />
+            We’ll help you explore the next step.
+          </p>
+        </div>
+        <div className="finance-options-grid" data-stagger>
+          <article>
+            <span className="mono">01 / ESTABLISHED CREDIT</span>
+            <h3>Build on a strong start.</h3>
+            <p>
+              Explore financing options for your next vehicle and talk through
+              available rates, down payments and loan terms with the team.
+            </p>
+          </article>
+          <article>
+            <span className="mono">02 / BUILDING OR REBUILDING</span>
+            <h3>Start a conversation.</h3>
+            <p>
+              First-time buyer or working through a credit setback? Tell us
+              about your situation so we can discuss the programs available to
+              you.
+            </p>
+          </article>
+          <article>
+            <span className="mono">03 / BUY HERE, PAY HERE</span>
+            <h3>Another way forward.</h3>
+            <p>
+              Ask about our buy here, pay here options and how payments through
+              the dealership can work for your purchase.
+            </p>
+          </article>
+        </div>
+        <p className="small muted">
+          Financing is subject to application review and approval. Program
+          availability, vehicle eligibility, down payment, rates and terms vary.
+        </p>
       </section>
       <section className="finance-process section" data-motion-section>
         <div className="section-heading">
@@ -138,6 +167,10 @@ export default function FinancingPage() {
             {
               q: "Can I trade in my current vehicle?",
               a: "Yes. Start with our sell or trade form and tell us about your vehicle. Final trade value and any loan payoff are confirmed with the team after inspection.",
+            },
+            {
+              q: "Do you offer buy here, pay here?",
+              a: "Yes. Ask the team about our buy here, pay here options, eligible vehicles, down payments and payment schedules. Availability and terms depend on your application and vehicle.",
             },
             {
               q: "Is financing guaranteed?",

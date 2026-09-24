@@ -1,4 +1,6 @@
 import assert from "node:assert/strict";
+import { chromium } from "@playwright/test";
+import AxeBuilder from "@axe-core/playwright";
 import { createServer } from "node:https";
 import { createServer as createTcpServer } from "node:net";
 import { mkdtemp, readFile, rm } from "node:fs/promises";
@@ -10,6 +12,7 @@ import { execFileSync, spawn } from "node:child_process";
 const dir = await mkdtemp(join(tmpdir(), "revdistrict-integration-"));
 let app;
 let fixture;
+let browser;
 try {
   const key = join(dir, "key.pem");
   const cert = join(dir, "cert.pem");
@@ -50,6 +53,8 @@ try {
   };
   const received = [];
   let rejectLead = false;
+  let rejectFinance = false;
+  const receivedFinance = [];
   fixture = createServer(
     { key: await readFile(key), cert: await readFile(cert) },
     async (req, res) => {
@@ -75,6 +80,15 @@ try {
       }
       let body = "";
       for await (const chunk of req) body += chunk;
+      if (req.url === "/finance") {
+        receivedFinance.push({
+          body: JSON.parse(body),
+          idempotencyKey: req.headers["idempotency-key"],
+        });
+        res.statusCode = 200;
+        res.end(JSON.stringify({ accepted: !rejectFinance }));
+        return;
+      }
       received.push({
         body: JSON.parse(body),
         idempotencyKey: req.headers["idempotency-key"],
@@ -101,6 +115,9 @@ try {
       INVENTORY_FEED_TOKEN: "local-test-only",
       LEAD_WEBHOOK_URL: `${fixtureUrl}/leads`,
       LEAD_WEBHOOK_TOKEN: "local-test-only",
+      FINANCE_APPLICATION_ENABLED: "true",
+      FINANCE_WEBHOOK_URL: `${fixtureUrl}/finance`,
+      FINANCE_WEBHOOK_TOKEN: "local-test-only",
     },
     stdio: "ignore",
   });
@@ -168,10 +185,202 @@ try {
     2,
     "Invalid and honeypot leads were never forwarded",
   );
+  const finance = JSON.parse(
+    await readFile("tests/fixtures/finance-application.json", "utf8"),
+  );
+  const postFinance = (data, headers = {}) =>
+    fetch(`${origin}/api/finance`, {
+      method: "POST",
+      headers: {
+        Origin: origin,
+        "Content-Type": "application/json",
+        "X-Forwarded-For": "192.0.2.15",
+        ...headers,
+      },
+      body: JSON.stringify(data),
+    });
+  const financeAccepted = await postFinance(finance);
+  assert.equal(financeAccepted.status, 201);
+  const receipt = await financeAccepted.json();
+  assert.equal(receivedFinance.length, 1);
+  assert.equal(receipt.reference, receivedFinance[0].idempotencyKey);
+  assert.equal(
+    receivedFinance[0].body.application.applicant_ssn,
+    finance.applicant_ssn,
+  );
+  assert.ok(!JSON.stringify(receipt).includes(finance.applicant_ssn));
+  rejectFinance = true;
+  assert.equal(
+    (await postFinance(finance)).status,
+    502,
+    "A 200 response without accepted:true is not success",
+  );
+  rejectFinance = false;
+  assert.equal(
+    (await postFinance(finance, { Origin: "https://unrelated.example" }))
+      .status,
+    403,
+  );
+  const invalidFinance = await postFinance({
+    ...finance,
+    applicant_email: "not-an-email",
+  });
+  assert.equal(invalidFinance.status, 400);
+  const invalidBody = await invalidFinance.text();
+  assert.ok(!invalidBody.includes(finance.applicant_ssn));
+  assert.ok(!invalidBody.includes("not-an-email"));
+  assert.equal((await postFinance({ ...finance, website: "bot" })).status, 400);
+  assert.equal(
+    (await postFinance({ ...finance, message: "x".repeat(33000) })).status,
+    413,
+  );
+  assert.equal(
+    receivedFinance.length,
+    2,
+    "Rejected, invalid, cross-origin and honeypot requests were not forwarded",
+  );
+
+  // A real browser completes the enabled joint flow against this isolated HTTPS relay.
+  browser = await chromium.launch({
+    headless: true,
+    executablePath:
+      process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE ||
+      (process.platform === "darwin"
+        ? "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
+        : undefined),
+  });
+  const noJsContext = await browser.newContext({
+    javaScriptEnabled: false,
+    reducedMotion: "reduce",
+  });
+  const noJsPage = await noJsContext.newPage();
+  await noJsPage.goto(`${origin}/financing/apply`);
+  await noJsPage.locator('[name="applicant_name_first"]').fill("Synthetic");
+  await noJsPage.locator('[name="applicant_ssn"]').fill(finance.applicant_ssn);
+  let fallbackRequest;
+  await noJsPage.route("**/*", async (route) => {
+    if (route.request().isNavigationRequest()) {
+      fallbackRequest = route.request();
+      await route.fulfill({
+        status: 415,
+        body: "JavaScript is required to apply.",
+      });
+    } else await route.continue();
+  });
+  await noJsPage
+    .getByRole("button", { name: "Continue", exact: true })
+    .click({ force: true });
+  assert.equal(
+    fallbackRequest?.method(),
+    "POST",
+    "Unhydrated forms must not place sensitive data in a URL",
+  );
+  assert.equal(fallbackRequest?.url(), `${origin}/api/finance`);
+  assert.ok(!noJsPage.url().includes(finance.applicant_ssn));
+  await noJsContext.close();
+  const context = await browser.newContext({
+    viewport: { width: 390, height: 844 },
+    reducedMotion: "reduce",
+  });
+  await context.addInitScript(() => {
+    Element.prototype.requestPointerLock = () => Promise.resolve();
+    Element.prototype.setPointerCapture = () => {};
+  });
+  const page = await context.newPage();
+  await page.goto(`${origin}/financing/apply`);
+  await page.getByRole("button", { name: "Continue", exact: true }).click();
+  assert.equal(
+    await page
+      .locator('[name="applicant_name_first"]')
+      .evaluate((el) => document.activeElement === el),
+    true,
+  );
+  await page.getByLabel("Joint application", { exact: true }).check();
+  const co = Object.fromEntries(
+    Object.entries(finance)
+      .filter(([key]) => key.startsWith("applicant_"))
+      .map(([key, value]) => [
+        key.replace("applicant_", "coapplicant_"),
+        value,
+      ]),
+  );
+  const fillVisible = async () => {
+    for (const [name, value] of Object.entries({ ...finance, ...co })) {
+      const input = page.locator(`[name="${name}"]`);
+      if (
+        (await input.count()) === 1 &&
+        (await input.isVisible()) &&
+        (await input.isEnabled())
+      ) {
+        const tag = await input.evaluate((el) => el.tagName);
+        const type = await input.getAttribute("type");
+        if (tag === "SELECT") await input.selectOption(value);
+        else if (!["checkbox", "radio"].includes(type)) await input.fill(value);
+      }
+    }
+  };
+  for (let step = 0; step < 4; step++) {
+    await fillVisible();
+    const accessibility = await new AxeBuilder({ page })
+      .withTags(["wcag2a", "wcag2aa", "wcag21aa"])
+      .analyze();
+    assert.deepEqual(
+      accessibility.violations.map(({ id }) => id),
+      [],
+      `Application step ${step + 1} accessibility`,
+    );
+    if (step === 1) {
+      await page.locator('[name="applicant_current_address_years"]').fill("1");
+      assert.equal(
+        await page.locator('[name="applicant_previous_address"]').isVisible(),
+        true,
+      );
+      await page.locator('[name="applicant_current_address_years"]').fill("3");
+      assert.equal(
+        await page.locator('[name="applicant_previous_address"]').count(),
+        0,
+      );
+    }
+    await page.getByRole("button", { name: "Continue", exact: true }).click();
+  }
+  await page
+    .getByRole("button", { name: "Submit application", exact: true })
+    .waitFor();
+  await page.locator('[name="acceptance_of_terms"]').check();
+  await page.locator('[name="coapplicant_acceptance"]').check();
+  const reviewAccessibility = await new AxeBuilder({ page })
+    .withTags(["wcag2a", "wcag2aa", "wcag21aa"])
+    .analyze();
+  assert.deepEqual(
+    reviewAccessibility.violations.map(({ id }) => id),
+    [],
+    "Application review accessibility",
+  );
+  await page
+    .getByRole("button", { name: "Submit application", exact: true })
+    .click();
+  await page.getByText("APPLICATION RECEIVED", { exact: true }).waitFor();
+  assert.equal(receivedFinance.length, 3);
+  assert.equal(receivedFinance[2].body.application.application_type, "joint");
+  assert.equal(
+    receivedFinance[2].body.application.coapplicant_ssn,
+    finance.applicant_ssn,
+  );
+  assert.equal(
+    await page.locator('input[type="password"]').count(),
+    0,
+    "Sensitive inputs clear after acceptance",
+  );
+  assert.deepEqual(
+    await page.evaluate(() => [localStorage.length, sessionStorage.length]),
+    [0, 0],
+  );
+  await context.close();
   console.log(
-    "PASS: authenticated inventory feed, active filtering, missing facts/photos, lead acceptance/rejection, validation and honeypot forwarding guards.",
+    "PASS: authenticated inventory feed, active filtering, missing facts/photos, lead acceptance/rejection, validation and honeypot forwarding guards; authenticated credit delivery, durable receipt, no sensitive error echo, two-year history and complete joint application in a browser.",
   );
 } finally {
+  if (browser) await browser.close();
   if (app && app.exitCode === null) {
     app.kill("SIGTERM");
     await new Promise((resolve) => app.once("exit", resolve));

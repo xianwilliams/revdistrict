@@ -8,9 +8,10 @@ export function LeadForm({
   kind = "contact",
   vehicle,
 }: {
-  kind?: "contact" | "availability" | "trade";
+  kind?: "contact" | "availability" | "trade" | "consignment" | "text";
   vehicle?: { id: string; name: string };
 }) {
+  const vehicleSubmission = kind === "trade" || kind === "consignment";
   const [intent, setIntent] = useState<string>(kind),
     [state, setState] = useState<"idle" | "sending" | "success" | "error">(
       "idle",
@@ -61,7 +62,7 @@ export function LeadForm({
             preferredTime: get("preferredTime"),
           }
         : {}),
-      ...(kind === "trade"
+      ...(vehicleSubmission
         ? {
             trade: {
               year: Number(get("year")),
@@ -144,7 +145,7 @@ export function LeadForm({
     >
       <fieldset disabled={state === "sending"}>
         <legend className="sr-only">
-          {kind === "trade"
+          {vehicleSubmission
             ? "Vehicle valuation request"
             : "Contact RevDistrict"}
         </legend>
@@ -172,7 +173,7 @@ export function LeadForm({
             </button>
           </div>
         )}
-        {kind === "trade" && (
+        {vehicleSubmission && (
           <>
             <div className="form-section-title">
               <span className="mono">01 / YOUR VEHICLE</span>
@@ -278,17 +279,19 @@ export function LeadForm({
               placeholder="Last name"
             />
           </label>
-          <label>
-            Email *
-            <input
-              name="email"
-              type="email"
-              autoComplete="email"
-              required
-              maxLength={254}
-              placeholder="you@email.com"
-            />
-          </label>
+          {kind !== "text" && (
+            <label>
+              Email *
+              <input
+                name="email"
+                type="email"
+                autoComplete="email"
+                required
+                maxLength={254}
+                placeholder="you@email.com"
+              />
+            </label>
+          )}
           <label>
             Phone *
             <input
@@ -331,7 +334,7 @@ export function LeadForm({
           )}
         </div>
         <label>
-          {kind === "trade" ? "Anything else we should know?" : "Your message"}{" "}
+          {vehicleSubmission ? "Anything else we should know?" : "Your message"}{" "}
           *
           <textarea
             name="message"
@@ -345,8 +348,10 @@ export function LeadForm({
                 : ""
             }
             placeholder={
-              kind === "trade"
-                ? "Condition, upgrades, service history, or what you’d like to trade into..."
+              vehicleSubmission
+                ? kind === "consignment"
+                  ? "Condition, service history, your selling timeline and target price..."
+                  : "Condition, upgrades, service history, or what you’d like to trade into..."
                 : "What can we help you with?"
             }
           />
@@ -365,11 +370,17 @@ export function LeadForm({
           </span>
         </label>
         <label className="checkbox-label">
-          <input type="checkbox" name="textConsent" />
+          <input
+            type="checkbox"
+            name="textConsent"
+            required={kind === "text"}
+          />
           <span>
-            You may also text me about this request. Message and data rates may
-            apply. Reply STOP to opt out. Consent is not a condition of
-            purchase.
+            {kind === "text"
+              ? "I agree to receive text messages about this request."
+              : "You may also text me about this request."}{" "}
+            Message and data rates may apply. Reply STOP to opt out. Consent is
+            not a condition of purchase.{kind === "text" && " *"}
           </span>
         </label>
         {state === "error" && (
@@ -393,19 +404,25 @@ export function LeadForm({
           <span>
             {state === "sending"
               ? "Sending…"
-              : kind === "trade"
-                ? "Request a valuation"
+              : vehicleSubmission
+                ? kind === "consignment"
+                  ? "Request a consignment consultation"
+                  : "Request a valuation"
                 : intent === "test-drive"
                   ? "Request a test drive"
-                  : "Send message"}
+                  : kind === "text"
+                    ? "Request a text back"
+                    : "Send message"}
           </span>
           <ArrowRight size={18} />
         </button>
         <p className="small muted">
           {intent === "test-drive"
             ? "Your appointment is confirmed only after our team contacts you."
-            : kind === "trade"
-              ? "A valuation request is not a binding offer. Final value is subject to inspection."
+            : vehicleSubmission
+              ? kind === "consignment"
+                ? "A consultation request is not a consignment agreement. Vehicle acceptance, pricing and fees are agreed with the team."
+                : "A valuation request is not a binding offer. Final value is subject to inspection."
               : "Please don’t include Social Security numbers, bank details, or other sensitive information."}
         </p>
       </fieldset>

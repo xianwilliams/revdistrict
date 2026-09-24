@@ -6,9 +6,11 @@ import { ButtonLink } from "./ui";
 export function PaymentCalculator({
   price = 30000,
   compact = false,
+  vehicleId,
 }: {
   price?: number;
   compact?: boolean;
+  vehicleId?: string;
 }) {
   const [amount, setAmount] = useState(price),
     [down, setDown] = useState(Math.round(price * 0.15)),
@@ -93,8 +95,15 @@ export function PaymentCalculator({
         depend on lender approval.
       </p>
       {compact && (
-        <ButtonLink href="/financing" variant="text">
-          Explore financing
+        <ButtonLink
+          href={
+            vehicleId
+              ? `/financing/apply?entry_id=${encodeURIComponent(vehicleId)}`
+              : "/financing/apply"
+          }
+          variant="text"
+        >
+          Apply for financing
         </ButtonLink>
       )}
     </div>

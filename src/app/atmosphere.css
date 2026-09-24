@@ -10,7 +10,7 @@
 }
 .header-contact.button:hover {
   color: #17130d;
-  background: #e5c991;
+  background: #f2c168;
 }
 .brand img {
   object-fit: contain;
@@ -67,10 +67,10 @@
   position: relative;
   isolation: isolate;
   overflow: hidden;
-  min-height: 630px;
+  min-height: 520px;
   display: flex;
   align-items: center;
-  padding: 100px var(--gutter) 110px;
+  padding: 75px var(--gutter) 85px;
   background: #080808;
 }
 .cinematic-intro > :not(.ambient-film) {
@@ -81,7 +81,7 @@
   color: #dfc69d;
 }
 .cinematic-intro h1 {
-  font-size: clamp(58px, 6.4vw, 100px);
+  font-size: clamp(54px, 5.7vw, 90px);
   max-width: 1050px;
 }
 .cinematic-copy {
@@ -122,7 +122,7 @@
   color: var(--accent);
 }
 .story-page-hero.cinematic-intro {
-  min-height: 670px;
+  min-height: 540px;
 }
 .story-hero-bottom {
   max-width: 1040px;
@@ -137,10 +137,10 @@
   margin-top: -40px;
 }
 .contact-intro.cinematic-intro {
-  min-height: 570px;
+  min-height: 500px;
 }
 .inventory-intro.cinematic-intro {
-  min-height: 480px;
+  min-height: 410px;
   align-items: flex-end;
   padding-top: 95px;
   padding-bottom: 85px;
@@ -168,13 +168,13 @@
   overflow: hidden;
   background: #080808;
   gap: 9%;
-  padding-top: 75px;
-  padding-bottom: 85px;
+  padding-top: 55px;
+  padding-bottom: 60px;
 }
 .finance-copy {
   position: relative;
   isolation: isolate;
-  padding: 45px 0;
+  padding: 25px 0;
 }
 .finance-copy > .ambient-film {
   z-index: -1;

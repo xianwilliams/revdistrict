@@ -54,3 +54,13 @@ Listing and gallery photos now receive responsive source sets, including smaller
 The local cold-cache, 1.6 Mbps/150 ms/4× CPU comparison on the Acura page measured phone LCP at 2.44 s, down from 3.29 s, and next-photo click-to-decoded-image at 113 ms, down from 433 ms. Desktop LCP was 3.64 s versus 3.50 s; desktop next-photo was 113 ms versus 452 ms. These are individual local lab runs, not field Core Web Vitals certification. The production host, CDN and physical devices still need launch measurements.
 
 The updated checks and exact evidence paths are in [VERIFICATION.md](VERIFICATION.md).
+
+## September 24: client priorities and desktop scale
+
+The client retained the direction and requested a closer match to the original logo's gold. The shared accent now uses `#e5aa3d`; sheen stops use deeper amber shadows and brighter warm highlights. Existing white transparent marks, technical uppercase type and black/charcoal surfaces remain.
+
+Inventory, financing and consignment now form the first content section after the hero. They use compact, consistently sized photographic links; financing explicitly spans great credit through buy here, pay here. The Sell / Trade route remains available beneath them and in navigation. The new consignment page reuses the established cinematic hero, drawn process icons, photo carousel and lead form.
+
+Desktop home hero height changed from 100svh with a 790–1100px range to 90svh with a 670–880px range. Shared section spacing now tops out at 96px rather than 128px; the drive stage/dial, people scene, visit scene and interior heroes are tighter. Service images use landscape proportions instead of oversized near-square blocks. Phone layouts retain touch-friendly controls; new service headings stack above descriptions rather than competing for two narrow columns.
+
+The native application uses the same type, dark inputs and gold actions, with a quiet step sidebar on desktop and horizontally scrollable progress on phones. Forms themselves are excluded from decorative movement. No new film files or dependencies were required for this pass. Fresh evidence is recorded in `research/client-feedback/` and the verification handoff.

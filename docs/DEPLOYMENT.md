@@ -38,11 +38,11 @@ Upload `src/`, `public/`, `.next/`, `package.json`, `package-lock.json`, `next.c
 ## Launch sequence
 
 1. Connect and validate the dealer-authorized inventory adapter and lead relay on a staging origin.
-2. Confirm the permanent provider-hosted credit-application URL before redirecting the legacy dealership domain.
+2. Connect and test the approved financial relay for `/financing/apply`, obtain dealer/provider approval of disclosures and mapping, and then enable `FINANCE_APPLICATION_ENABLED`. Application input remains disabled until that connection is configured; no old-domain application fallback remains. See `INTEGRATIONS.md` for the acceptance contract.
 3. Confirm the new domain, business email, logo treatment, phone/hours and legal copy with the dealer.
 4. Replace the two temporary video slots if the new films are ready. Review captions and posters.
-5. Configure HTTPS, environment variables, trusted proxy headers and shared abuse protection. Verify that deployment logs never contain lead payloads.
-6. Smoke-test home → inventory → vehicle → inquiry, financing link, trade/contact forms, phone/text/maps, and a provider-confirmed CRM test lead.
+5. Configure HTTPS, environment variables, trusted proxy headers and shared abuse protection. Disable request-body capture in proxy, server and monitoring logs; verify no lead or financial payloads appear. Confirm encrypted storage and access controls at the provider/relay.
+6. Smoke-test home → inventory → vehicle → inquiry, individual/joint applications, consignment/trade/contact/text-back forms, phone/maps, and provider-confirmed CRM/application test receipts. Use approved synthetic test identities and destinations.
 7. Point the new domain through Namecheap DNS. Preserve old `/inventory/<slug>/<id>` paths with path-preserving 301 redirects at the old host. This app also redirects `/home`, `/contact`, and `/trade-in` aliases.
 8. Enable `SITE_INDEXABLE=true` only with the real feed active, then rebuild/restart. Check canonical URLs, sitemap, robots, and structured vehicle data.
 9. Monitor feed freshness and relay delivery. Ensure sold vehicles disappear and source photo links remain valid.

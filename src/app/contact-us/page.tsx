@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import { ArrowUpRight, Phone, Mail, MapPin } from "lucide-react";
+import Link from "next/link";
+import { ArrowUpRight, Phone, Mail, MapPin, MessageSquare } from "lucide-react";
 import { AmbientFilm } from "@/components/ambient-film";
 import { LeadForm } from "@/components/lead-form";
 import { site } from "@/lib/site";
@@ -40,11 +41,19 @@ export default function ContactPage() {
           <a className="contact-method" data-reveal href={site.phoneHref}>
             <Phone size={22} data-icon-draw />
             <span>
-              <small className="mono">CALL OR TEXT</small>
+              <small className="mono">CALL THE TEAM</small>
               <strong>{site.phone}</strong>
             </span>
             <ArrowUpRight size={20} />
           </a>
+          <Link className="contact-method" data-reveal href="/contact-us/text">
+            <MessageSquare size={22} data-icon-draw />
+            <span>
+              <small className="mono">START WITH A TEXT</small>
+              <strong>Request a text back</strong>
+            </span>
+            <ArrowUpRight size={20} />
+          </Link>
           <a
             className="contact-method"
             data-reveal

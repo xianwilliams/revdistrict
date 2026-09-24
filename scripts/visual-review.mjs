@@ -12,14 +12,19 @@ const paths = [
   "/inventory",
   "/inventory/2024-acura-integra-a-spec-technology/1173076",
   "/financing",
+  "/financing/apply",
+  "/financing/terms",
+  "/consignment",
   "/sell-your-vehicle",
   "/contact-us",
+  "/contact-us/text",
   "/our-story",
   "/privacy-policy",
 ];
 const results = [];
 for (const viewport of [
   { width: 1440, height: 1000 },
+  { width: 1366, height: 768 },
   { width: 390, height: 844 },
   { width: 360, height: 640 },
 ]) {
@@ -39,6 +44,9 @@ for (const viewport of [
         "/",
         "/inventory",
         "/inventory/2024-acura-integra-a-spec-technology/1173076",
+        "/consignment",
+        "/financing/apply",
+        "/contact-us/text",
       ]
     : paths) {
     const response = await page.goto(

@@ -15,18 +15,25 @@ export default function PrivacyPage() {
         <h2>Information you provide</h2>
         <p>
           When you contact us, ask about a vehicle, request a test drive, or
-          submit a vehicle for valuation, you may provide your name, email,
-          phone number, message, preferred appointment time, and vehicle
-          information. We use this information to respond to your request and
-          help with the services you ask about.
+          submit a vehicle for valuation or consignment, you may provide your
+          name, email, phone number, message, preferred appointment time, and
+          vehicle information. We use this information to respond to your
+          request and help with the services you ask about.
         </p>
         <h2>Financing applications</h2>
         <p>
-          Financing applications open on our dealer-hosted application service.
-          That service collects the details needed for a credit application and
-          presents its own disclosures and authorizations. Do not send Social
-          Security numbers, bank information, or copies of identity documents
-          through the general contact form.
+          When online applications are available, the on-site credit application
+          collects identity and contact details, residence and employment
+          history, income, and optional co-applicant, vehicle and trade
+          information. Only after you authorize and submit it, the application
+          is forwarded through an authenticated connection to the approved
+          financing processor. Unsubmitted applications are not saved by this
+          website. Application contents are not stored in this website’s
+          database, browser storage or application logs. The dealership and
+          financing providers retain received applications under their
+          applicable policies. Do not send Social Security numbers, bank
+          information, or copies of identity documents through the general
+          contact form.
         </p>
         <h2>Service providers and sharing</h2>
         <p>
@@ -49,8 +56,8 @@ export default function PrivacyPage() {
           Vehicle photographs may load from our inventory provider. The contact
           page includes a Google map. Loading third-party resources can disclose
           standard connection information, such as your IP address, to those
-          providers. Links to CARFAX, social platforms, maps, and the financing
-          application are governed by those services’ policies.
+          providers. Links to CARFAX, social platforms, and maps are governed by
+          those services’ policies.
         </p>
         <h2>Text messages</h2>
         <p>

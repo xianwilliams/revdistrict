@@ -21,6 +21,75 @@ export default async function Home() {
           WELCOME TO THE DISTRICT <ArrowUpRight size={18} />
         </span>
       </div>
+      <section className="paths-section section" id="your-next-move">
+        <div className="paths-intro">
+          <h2 data-reveal>
+            Your next move.
+            <br />
+            <span data-sheen>Made simple.</span>
+          </h2>
+          <p>
+            Find your car. Find your financing.
+            <br />
+            Or let us sell the one you have.
+          </p>
+        </div>
+        <div className="path-list">
+          {[
+            {
+              href: "/inventory",
+              title: "Explore inventory.",
+              text: "Explore cars, trucks, and SUVs. Find the one that feels like you.",
+              label: "EXPLORE INVENTORY",
+              image: "/images/district-bmw.webp",
+              note: "THE ONE YOU KEEP THINKING ABOUT",
+            },
+            {
+              href: "/financing",
+              title: "Financing.",
+              text: "From great credit to buy here, pay here. Explore the options and apply right here.",
+              label: "EXPLORE FINANCING",
+              image: "/images/district-interior.webp",
+              note: "A PLAN FOR THE POSSIBILITY",
+            },
+            {
+              href: "/consignment",
+              title: "Consignment.",
+              text: "We sell your car for you. Professional presentation, buyer conversations and a plan to get the most from your sale.",
+              label: "SELL WITH REVDISTRICT",
+              image: "/images/district-detail.webp",
+              note: "YOUR CAR. OUR EXPERTISE.",
+            },
+          ].map((item, i) => (
+            <Link className="path-row" href={item.href} key={item.href}>
+              <div className="path-visual">
+                <img
+                  src={item.image}
+                  width="800"
+                  height="400"
+                  alt=""
+                  loading="lazy"
+                />
+                <span className="mono">
+                  0{i + 1} / {item.note}
+                </span>
+                <ArrowUpRight size={26} />
+              </div>
+              <div className="path-copy">
+                <h3>{item.title}</h3>
+                <p>{item.text}</p>
+                <span className="path-label mono">{item.label}</span>
+              </div>
+            </Link>
+          ))}
+        </div>
+        <p className="paths-alternative">
+          Prefer a direct sale or trade-in?{" "}
+          <Link href="/sell-your-vehicle">
+            Explore Sell / Trade <ArrowUpRight size={15} />
+          </Link>
+        </p>
+      </section>
       <DriveSelector
         vehicles={inventory.vehicles.map(toVehicleSummary)}
         isPreview={inventory.isPreview}
@@ -62,69 +131,6 @@ export default async function Home() {
             <span className="mono">A LITTLE LOOK BEHIND THE SCENES.</span>
           </div>
           <span className="film-edge-label mono">CARS BRING US TOGETHER.</span>
-        </div>
-      </section>
-      <section className="paths-section section">
-        <div className="paths-intro">
-          <h2 data-reveal>
-            Less friction.
-            <br />
-            <span data-sheen>More open road.</span>
-          </h2>
-          <p>
-            A better way to get from
-            <br />
-            “what if” to “let’s go.”
-          </p>
-        </div>
-        <div className="path-list">
-          {[
-            {
-              href: "/inventory",
-              title: "Find your next.",
-              text: "Explore cars, trucks, and SUVs. Find the one that feels like you.",
-              label: "EXPLORE INVENTORY",
-              image: "/images/district-bmw.webp",
-              note: "THE ONE YOU KEEP THINKING ABOUT",
-            },
-            {
-              href: "/financing",
-              title: "Make it happen.",
-              text: "Explore your budget and start a secure financing application.",
-              label: "EXPLORE FINANCING",
-              image: "/images/district-interior.webp",
-              note: "A PLAN FOR THE POSSIBILITY",
-            },
-            {
-              href: "/sell-your-vehicle",
-              title: "Turn the page.",
-              text: "Selling or trading? Tell us what you’re driving. We’ll take it from there.",
-              label: "SELL OR TRADE",
-              image: "/images/district-detail.webp",
-              note: "SOMETHING GOOD COMES NEXT",
-            },
-          ].map((item, i) => (
-            <Link className="path-row" href={item.href} key={item.href}>
-              <div className="path-visual">
-                <img
-                  src={item.image}
-                  width="800"
-                  height="400"
-                  alt=""
-                  loading="lazy"
-                />
-                <span className="mono">
-                  0{i + 1} / {item.note}
-                </span>
-                <ArrowUpRight size={26} />
-              </div>
-              <div className="path-copy">
-                <h3>{item.title}</h3>
-                <p>{item.text}</p>
-                <span className="path-label mono">{item.label}</span>
-              </div>
-            </Link>
-          ))}
         </div>
       </section>
       <Visit />

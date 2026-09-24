@@ -1,6 +1,6 @@
 # Verification and review handoff
 
-Checked September 23, 2026 against the compiled Next.js application, served through the included `server.cjs`. The review preview is running at **http://localhost:3001**. To restart it: `npm run build`, then `PORT=3001 node server.cjs`. Normal development uses `npm run dev` at http://localhost:3000.
+Checked September 24, 2026 against the compiled Next.js application, served through the included `server.cjs`. The review preview is running at **http://localhost:3001**. To restart it: `npm run build`, then `PORT=3001 node server.cjs`. Normal development uses `npm run dev` at http://localhost:3000.
 
 ## Completed checks
 
@@ -9,14 +9,22 @@ Checked September 23, 2026 against the compiled Next.js application, served thro
 | TypeScript, ESLint, Prettier | Passed |
 | Production build and custom-server startup | Passed |
 | Dependency audit | 0 reported vulnerabilities |
-| Domain tests | 7 passed: source facts/body types, legacy paths, payment calculations, drive styles, lead validation, rate limiting and provider photo URL sizing/fallback |
-| Browser tests | 14 passed: search/filter/pagination, saves, drive selector, gallery/keyboard, repeated test-drive intent, calculator, failed lead delivery, endpoint guards, mobile navigation, opt-in film, hero chapters/pause, offscreen pause, scroll sheen, responsive gallery sources/next-photo prefetch, interior films/carousel and accessibility |
-| Accessibility scan | Zero Axe WCAG 2 A/AA and 2.1 AA violations on home, inventory, Acura detail, financing, trade and contact |
-| HTTPS integration fixtures | Passed: authenticated feed, sold filtering, missing facts/photos, lead acceptance and rejection, idempotency reference, invalid/honeypot leads not forwarded |
-| Responsive route captures | 19 page/viewport combinations returned 200 with no horizontal overflow, page JavaScript errors or broken loaded images |
-| Motion captures | Original 51 home states plus 30 final interior states across desktop, touch-emulated phone and reduced motion; all final states have no overflow or page errors |
+| Domain tests | 13 passed: original 7 plus individual/joint application validation, two-year history, conditional trade data, consent, inactive data stripping, consignment and text intents |
+| Browser tests | 18 passed: original 14 journeys plus homepage priorities/internal application links, safe unconfigured application, consignment/text submissions, and stacked phone service headings |
+| Accessibility scan | Zero Axe WCAG 2 A/AA and 2.1 AA violations across ten routes, including the four new pages; zero violations on all five enabled joint-application steps in the isolated fixture |
+| HTTPS integration fixtures | Passed: authenticated feed and leads, plus authenticated financial delivery, durable receipt, rejected/cross-origin/oversize/honeypot requests, sensitive error redaction, native POST fallback without JavaScript, and a complete joint application in Chromium |
+| Responsive route captures | 42 page/viewport combinations returned 200 with no horizontal overflow, page JavaScript errors or broken loaded images |
+| Motion captures | Original 51 home and 30 interior states, plus 9 new client-feedback states across desktop, touch-emulated phone and reduced motion; latest states have no overflow or page errors |
 
 Commands and fixtures live in `tests/` and `scripts/`. The local integration fixtures use temporary certificates and synthetic data; they send nothing to the dealership or provider.
+
+## September 24 feedback pass
+
+Homepage priorities now appear before the driving-style selector. The application is native, preserves vehicle selection from car pages, supports individual/joint applicants, conditionally requests prior residence/employment and trade information, and uses a dedicated authenticated delivery contract. The preview blocks financial information entry while that contract is unconfigured. New consignment and text-back requests extend the existing lead form; general contact, valuation and vehicle inquiry remain available. No application links return to the legacy dealership website.
+
+`research/client-feedback/` contains fresh full-page captures for all twelve content routes at 1440×1000, 1366×768 and 390×844, plus six routes at 360×640. Desktop hero/section density, gold, homepage priorities, financing, consignment, application and phone service headings were visually inspected. `motion-results.json` and its nine viewport captures cover the new service section, finance options and consignment process with normal and reduced motion. Icons below the viewport remain unrevealed until reached; reduced motion keeps all content visible.
+
+Regression checks first reproduced the finance header-order override, unsafe native GET fallback when JavaScript is unavailable, and two-column phone service headings. The fixes move the application-specific header after the global rule, provide an explicit POST fallback and no-script guidance, and stack the new phone headings. Automated accessibility scans also caught two links relying on color alone; both now have persistent underlines.
 
 ## Visual evidence
 
@@ -55,18 +63,20 @@ The brief was self-authored under the user's explicit creative delegation. A mul
 
 The signature is the driving-style selector: a rev-counter needle changes with the selected collection, the real cars change, and the choice continues into inventory search. The revised hero has independently moving film, typography and fine framing planes. Its three chapter controls expose the cars, people and driving scenes. Two separate supplied-video slots provide the personal introduction. The current type system, film edit and user-directed refinement are documented in `VISUAL-REFINEMENT.md`.
 
-The inspected sequence reads as arrival → choice → confidence → people → practical next steps → invitation. This matches the intended curiosity → agency → confidence → warmth → clarity → readiness curve. The car-selection section is the largest interactive stage; no empty pinned scrolling was added. The ending resolves with a visit invitation, hours and phone. Phone composition uses a separately framed portrait reel, large headline and clear primary action. The fingerprint registry was empty before this build; its first row now records the result.
+The latest inspected sequence reads as arrival → service choice → driving-style selection → inventory → people → invitation. The client-requested service priorities now precede the interactive stage, while the car-selection section remains the experiential peak. No empty pinned scrolling was added. The ending resolves with a visit invitation, hours and phone. Phone composition uses a separately framed portrait reel, large headline and clear primary action. The fingerprint registry was empty before this build; its first row records the result.
 
 ## Independent review
 
 The engineering-standard simplicity review found the component structure appropriately small. Its concrete findings were addressed: source mileage/body parsing, phone validation, test-drive intent including repeated clicks, unknown facts in metadata, and generated imagery as a missing-photo fallback. Missing listing images now receive neutral text. The supplied welcome clip already has burned speech captions; the second excerpt is silent. The independent second-pass editorial review found the component structure appropriately simple and identified a remounted live region; its changing key was removed so selection announcements use a stable region. The third-pass review caught a duplicated Story hero tween and insufficient FAQ-photo overscan for parallax; both were fixed. A final read-only review of local Inter loading and the mounted next-photo prefetch found no new actionable issues. No unresolved review finding is being hidden behind the passing tests.
 
+The September 24 independent review found the shared finance descriptors and LeadForm extensions appropriately simple. It identified the native GET fallback and header order described above; both were fixed with regressions. No new framework or generic provider abstraction was introduced.
+
 ## What remains unverified
 
 - Real dealr.cloud export/API authorization, mapping, update cadence and CRM lead receipt. The app's normalized JSON contract is not a claim that dealr.cloud already exposes that shape. The provider handoff is in `INTEGRATIONS.md`.
 - Namecheap hosting-plan capability, server limits, DNS, TLS and deployed performance. A registrar account alone does not establish Node hosting. No public deployment or DNS changes were made.
-- A stable provider-hosted credit application URL for the rebrand. The existing financing page is linked for now; replace it before redirecting the old domain.
+- The approved financial relay, provider field mapping, lender routing, production receipt and disclosure approval. Native application code is complete and tested against an isolated fixture; live information entry remains disabled until configured. Provider/host encryption, access controls, request-body logging restrictions and shared abuse protection must be confirmed before enabling it.
 - Real iPhone/Android hardware, Safari, low-power video behavior and manual screen-reader evaluation. Phone checks here are Chromium emulation, not physical-device testing.
 - Dealer approval of rebrand copy, retained business contact details, video choices, privacy notice and final live inventory/lead flow.
 
-For the human review, start at home, change the drive style, open inventory, search “Acura Integra,” open the vehicle, use the gallery, and request a test drive. Check financing, sell/trade, contact and the story page at phone width. The unconfigured preview deliberately does not claim that a form message was sent.
+For the human review, start at home and open each of the three prominent service links. Review Consignment and its consultation form, Financing and its application steps, then Contact → Request a text back. Open the Acura listing and use its financing button to confirm the vehicle carries into the application. Also check the smaller desktop sections and phone layouts. The unconfigured preview deliberately does not claim that any form message was sent; credit fields remain disabled until an approved connection exists.

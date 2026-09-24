@@ -253,8 +253,12 @@ test("core pages pass automated accessibility checks", async ({ page }) => {
     "/inventory",
     car,
     "/financing",
+    "/financing/apply",
+    "/financing/terms",
+    "/consignment",
     "/sell-your-vehicle",
     "/contact-us",
+    "/contact-us/text",
   ]) {
     await page.goto(path);
     const result = await new AxeBuilder({ page })
@@ -321,4 +325,139 @@ test("interior films respect reduced motion and trade photos can be browsed", as
   await expect(caption).toHaveText("Make room for what’s next.");
   await page.getByRole("button", { name: "Previous district photo" }).click();
   await expect(caption).toHaveText("Every detail matters.");
+});
+
+test("client priorities are prominent and financing stays on RevDistrict", async ({
+  page,
+}) => {
+  await page.goto("/");
+  const priorities = page.locator("#your-next-move");
+  await expect(
+    priorities.getByRole("link", { name: /consignment/i }),
+  ).toHaveAttribute("href", "/consignment");
+  await expect(priorities).toContainText("buy here, pay here");
+  expect(
+    await priorities.evaluate(
+      (el) =>
+        el.compareDocumentPosition(
+          document.querySelector("#find-your-drive")!,
+        ) & Node.DOCUMENT_POSITION_FOLLOWING,
+    ),
+  ).toBeTruthy();
+  await page.goto("/financing");
+  await expect(
+    page.getByRole("link", { name: "Start your application" }),
+  ).toHaveAttribute("href", "/financing/apply");
+  await page.goto(car);
+  await expect(
+    page.getByRole("link", { name: "Apply for financing" }),
+  ).toHaveAttribute("href", "/financing/apply?entry_id=1173076");
+  for (const path of [
+    "/",
+    "/financing",
+    "/consignment",
+    "/financing/apply",
+    "/financing/terms",
+    "/contact-us/text",
+  ]) {
+    await page.goto(path);
+    await expect(
+      page.locator('a[href*="www.utahusedcarfactory.com"]'),
+    ).toHaveCount(0);
+  }
+});
+
+test("unconfigured application is reviewable without collecting financial information", async ({
+  page,
+}) => {
+  const applicationPage = await page.goto("/financing/apply?entry_id=1173076");
+  expect(applicationPage?.headers()["referrer-policy"]).toBe("no-referrer");
+  expect(applicationPage?.headers()["cache-control"]).toContain("no-store");
+  await expect(
+    page.getByText("Online applications are being connected."),
+  ).toBeVisible();
+  await expect(
+    page.getByLabel("Social Security number *", { exact: true }),
+  ).toBeDisabled();
+  await page.getByLabel("Joint application", { exact: true }).check();
+  await page.getByRole("button", { name: /Co-applicant/ }).click();
+  await expect(
+    page.getByLabel("Social Security number *", { exact: true }),
+  ).toBeDisabled();
+  await page.getByRole("button", { name: /Vehicle & review/ }).click();
+  await expect(
+    page.getByRole("button", { name: "Submit application" }),
+  ).toBeDisabled();
+  await expect(page.getByLabel("Vehicle of interest")).toHaveValue("1173076");
+  const response = await page.request.post("/api/finance", { data: {} });
+  expect(response.status()).toBe(503);
+});
+
+test("consignment and text-back forms use their own lead intents", async ({
+  page,
+}) => {
+  const received: Record<string, unknown>[] = [];
+  await page.route("**/api/leads", async (route) => {
+    received.push(route.request().postDataJSON());
+    await route.fulfill({
+      status: 201,
+      contentType: "application/json",
+      body: JSON.stringify({ message: "Synthetic test receipt." }),
+    });
+  });
+  await page.goto("/consignment");
+  for (const [name, value] of Object.entries({
+    year: "2020",
+    make: "Example",
+    model: "Car",
+    mileage: "40000",
+    firstName: "Synthetic",
+    lastName: "Test",
+    email: "test@example.com",
+    phone: "8015550199",
+    message: "Please discuss consignment.",
+  }))
+    await page.locator(`[name="${name}"]`).fill(value);
+  await page.locator('[name="condition"]').selectOption("Good");
+  await page.locator('[name="consent"]').check();
+  await page
+    .getByRole("button", { name: "Request a consignment consultation" })
+    .click();
+  await expect(page.getByText("Synthetic test receipt.")).toBeVisible();
+  expect(received[0].intent).toBe("consignment");
+  await page.goto("/contact-us/text");
+  await expect(page.locator('[name="email"]')).toHaveCount(0);
+  for (const [name, value] of Object.entries({
+    firstName: "Synthetic",
+    lastName: "Test",
+    phone: "8015550199",
+    message: "Please text me about the car.",
+  }))
+    await page.locator(`[name="${name}"]`).fill(value);
+  await page.locator('[name="consent"]').check();
+  await page.locator('[name="textConsent"]').check();
+  await page.getByRole("button", { name: "Request a text back" }).click();
+  await expect(page.getByText("Synthetic test receipt.")).toBeVisible();
+  expect(received[1].intent).toBe("text");
+  expect(received[1].textConsent).toBe(true);
+});
+
+test("new service headings stack above their descriptions on phones", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  for (const [path, section] of [
+    ["/consignment", ".consignment-process"],
+    ["/financing", ".finance-options"],
+  ]) {
+    await page.goto(path);
+    const heading = await page
+      .locator(`${section} .section-heading > div`)
+      .boundingBox();
+    const description = await page
+      .locator(`${section} .section-heading > p`)
+      .boundingBox();
+    expect(heading!.width).toBeGreaterThan(300);
+    expect(description!.y).toBeGreaterThanOrEqual(heading!.y + heading!.height);
+  }
 });
