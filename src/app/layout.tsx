@@ -9,7 +9,6 @@ import "./atmosphere.css";
 import "./services.css";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
-import { Motion } from "@/components/motion";
 const inter = localFont({
   src: "../../node_modules/@fontsource-variable/inter/files/inter-latin-standard-normal.woff2",
   variable: "--font-inter",
@@ -56,7 +55,6 @@ export default function RootLayout({
         <SiteHeader />
         <main id="main">{children}</main>
         <SiteFooter />
-        <Motion />
       </body>
     </html>
   );

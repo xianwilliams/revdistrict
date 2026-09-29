@@ -19,6 +19,10 @@ The build contains a clearly labeled 262-vehicle preview captured September 23, 
 - [Validation evidence and review notes](docs/VERIFICATION.md)
 - [September visual refinement and film edit](docs/VISUAL-REFINEMENT.md)
 
+## Saved vehicles
+
+Saving a vehicle does not require an account. The site stores vehicle IDs in browser `localStorage` under `revdistrict-saved`, not in an HTTP cache or a customer database. Saved choices survive reloads and later visits on the same browser, device and site origin. They do not sync between devices or browsers, and clearing site data removes them. Private browsing generally keeps them only for that private session. There is no customer login or separate logged-in behavior in this app.
+
 ## Checks
 
 ```sh

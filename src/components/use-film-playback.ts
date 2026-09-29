@@ -61,17 +61,5 @@ export function useFilmPlayback<T extends HTMLElement = HTMLElement>() {
     if (element.paused) void element.play().catch(() => setPlaying(false));
     else element.pause();
   }
-  function playAt(time: number) {
-    const element = video.current;
-    if (!element) return;
-    const seek = () => {
-      element.currentTime = time;
-    };
-    if (element.readyState === 0)
-      element.addEventListener("loadedmetadata", seek, { once: true });
-    else seek();
-    wanted.current = true;
-    void element.play().catch(() => setPlaying(false));
-  }
-  return { root, video, playing, toggle, playAt };
+  return { root, video, playing, toggle };
 }

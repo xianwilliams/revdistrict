@@ -5,9 +5,14 @@ export function SiteFooter() {
   return (
     <footer className="site-footer">
       <div className="footer-top">
-        <Link href="/" className="footer-brand">
-          REV<span>DISTRICT</span>
-          <i>GOOD CARS. REAL PEOPLE.</i>
+        <Link href="/" className="footer-brand" aria-label="RevDistrict home">
+          <img
+            src="/images/revdistrict-original.png"
+            width="1254"
+            height="1254"
+            alt="RevDistrict"
+            loading="lazy"
+          />
         </Link>
         <div className="footer-links">
           {navigation.map((n) => (

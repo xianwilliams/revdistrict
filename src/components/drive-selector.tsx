@@ -145,14 +145,6 @@ export function DriveSelector({
                 <text x="250" y="331" textAnchor="middle" className="dial-mode">
                   {labels[mode]}
                 </text>
-                <text
-                  x="250"
-                  y="361"
-                  textAnchor="middle"
-                  className="dial-count"
-                >
-                  {matches.length} DRIVES TO DISCOVER
-                </text>
               </svg>
             </div>
           </div>

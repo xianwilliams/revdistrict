@@ -1,3 +1,4 @@
+import { Motion } from "@/components/motion";
 import type { Metadata } from "next";
 import { Plus, CarFront, FileCheck2, Calculator } from "lucide-react";
 import { AmbientFilm } from "@/components/ambient-film";
@@ -198,6 +199,7 @@ export default function FinancingPage() {
           <a href={site.phoneHref}>{site.phone}</a>
         </div>
       </section>
+      <Motion />
     </>
   );
 }

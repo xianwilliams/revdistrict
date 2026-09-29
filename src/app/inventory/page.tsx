@@ -1,3 +1,4 @@
+import { Motion } from "@/components/motion";
 import type { Metadata } from "next";
 import { AmbientFilm } from "@/components/ambient-film";
 import { Suspense } from "react";
@@ -43,6 +44,7 @@ export default async function InventoryPage() {
           <InventoryBrowser vehicles={data.vehicles.map(toVehicleSummary)} />
         </Suspense>
       </section>
+      <Motion />
     </>
   );
 }

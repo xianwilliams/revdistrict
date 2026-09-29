@@ -1,3 +1,4 @@
+import { Motion } from "@/components/motion";
 import type { Metadata } from "next";
 import { site } from "@/lib/site";
 export const metadata: Metadata = { title: "Privacy Policy" };
@@ -89,6 +90,7 @@ export default function PrivacyPage() {
           {site.city}.
         </p>
       </article>
+      <Motion />
     </section>
   );
 }

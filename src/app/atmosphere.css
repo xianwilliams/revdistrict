@@ -12,13 +12,6 @@
   color: #17130d;
   background: #f2c168;
 }
-.brand img {
-  object-fit: contain;
-  background: transparent;
-  border-radius: 0;
-  width: 72px;
-  height: 66px;
-}
 .ambient-film {
   position: absolute;
   inset: 0;
@@ -254,13 +247,15 @@
   aspect-ratio: 1;
   display: grid;
   align-content: center;
-  padding: 60px;
-  background: radial-gradient(ellipse at 50% 45%, #26201866, #08080800 72%);
+  padding: 32px;
+  background:
+    radial-gradient(ellipse at 50% 45%, #26201866, #08080800 72%), var(--canvas);
 }
-.manifesto .brand-reveal img {
+.district-logo {
+  mix-blend-mode: screen;
   width: 100%;
-  max-width: 320px;
-  mix-blend-mode: normal;
+  max-width: 400px;
+  margin: 0 auto;
   position: relative;
 }
 .manifesto .brand-reveal > .mono {
@@ -361,20 +356,6 @@
   }
 }
 @media (max-width: 700px) {
-  .site-header .brand img {
-    width: 52px;
-    height: 54px;
-  }
-  .site-header .brand-word {
-    font-size: 18px;
-  }
-  .site-header .brand-word small {
-    font-size: 5px;
-    letter-spacing: 1.5px;
-  }
-  .site-header .brand {
-    gap: 8px;
-  }
   .header-contact.button {
     display: flex;
     min-height: 38px;
@@ -388,9 +369,6 @@
   }
   .header-actions {
     gap: 8px;
-  }
-  .site-header--home .header-contact {
-    font-size: 8px;
   }
   .cinematic-intro {
     min-height: 620px;
@@ -508,22 +486,13 @@
     max-width: 430px;
     width: 100%;
     margin: auto;
-    padding: 45px;
+    padding: 28px;
   }
   .district-carousel-caption p {
     font-size: 26px;
   }
 }
 @media (max-width: 380px) {
-  .site-header .brand-word {
-    font-size: 15px;
-  }
-  .site-header .brand-word small {
-    font-size: 4.5px;
-  }
-  .site-header .brand img {
-    width: 44px;
-  }
   .header-contact.button {
     padding: 0 8px;
     font-size: 7px;
@@ -544,10 +513,6 @@
   }
 }
 
-.brand img,
-.brand-reveal img {
-  filter: brightness(0) invert(1);
-}
 .faq-portrait {
   height: 360px;
 }
@@ -563,4 +528,52 @@
   .faq-portrait img {
     height: 112%;
   }
+}
+
+/* Original artwork bridges the navigation and the opening scene. */
+.site-header {
+  mix-blend-mode: screen;
+}
+.site-header .brand {
+  position: relative;
+  width: 176px;
+  height: 100%;
+  flex-shrink: 0;
+  align-self: flex-start;
+}
+.site-header .brand img {
+  position: absolute;
+  top: -12px;
+  width: 176px;
+  height: 176px;
+  object-fit: contain;
+  mix-blend-mode: screen;
+}
+.footer-brand {
+  display: block;
+  width: 180px;
+}
+.footer-brand img {
+  width: 100%;
+  height: auto;
+  mix-blend-mode: screen;
+}
+@media (max-width: 700px) {
+  .site-header .brand {
+    width: 132px;
+  }
+  .site-header .brand img {
+    width: 132px;
+    height: 132px;
+    top: -6px;
+  }
+  .footer-brand {
+    width: 152px;
+  }
+}
+
+.district-logo-needle {
+  transform-box: view-box;
+  transform-origin: 54.30622% 39.07496%;
+  transform: rotate(var(--needle-angle, 0deg));
 }

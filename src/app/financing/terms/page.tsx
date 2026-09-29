@@ -1,3 +1,4 @@
+import { Motion } from "@/components/motion";
 import type { Metadata } from "next";
 import Link from "next/link";
 import {
@@ -59,6 +60,7 @@ export default function FinanceTerms() {
           Go to the application
         </Link>
       </article>
+      <Motion />
     </section>
   );
 }

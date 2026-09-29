@@ -1,10 +1,8 @@
 "use client";
 import { useEffect } from "react";
-import { usePathname } from "next/navigation";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 export function Motion() {
-  const pathname = usePathname();
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
     const media = gsap.matchMedia();
@@ -27,6 +25,9 @@ export function Motion() {
             [...targets].some((element) => !element.getClientRects().length)
           )
             return;
+          const revealTargets = new Set(
+            main.querySelectorAll<HTMLElement>("[data-reveal]"),
+          );
           main
             .querySelectorAll<HTMLElement>(
               "[data-motion-section] h2, [data-motion-section] h3, [data-motion-section] > p, [data-motion-section] article > p, .cinematic-copy > p, .finance-copy > p, .story-hero-bottom, .contact-hours",
@@ -37,7 +38,7 @@ export function Motion() {
                   "form, [data-stagger], .payment-calculator, .district-carousel, [data-reveal], .brand-reveal",
                 )
               )
-                element.setAttribute("data-reveal", "");
+                revealTargets.add(element);
             });
           initialized = true;
           media.add("(prefers-reduced-motion: no-preference)", () => {
@@ -82,40 +83,6 @@ export function Motion() {
                     },
                   );
                 });
-              });
-            gsap.utils
-              .toArray<HTMLElement>("[data-brand-reveal]")
-              .forEach((mark) => {
-                const timeline = gsap.timeline({
-                  scrollTrigger: {
-                    trigger: mark,
-                    start: "top 80%",
-                    once: true,
-                  },
-                });
-                timeline
-                  .from(mark.querySelector(".brand-orbit"), {
-                    rotation: -60,
-                    opacity: 0,
-                    duration: 1.2,
-                    ease: "power3.out",
-                  })
-                  .from(
-                    mark.querySelector("img"),
-                    {
-                      clipPath: "inset(100% 0 0 0)",
-                      y: 18,
-                      opacity: 0,
-                      duration: 1.1,
-                      ease: "power3.out",
-                    },
-                    0.2,
-                  )
-                  .from(
-                    mark.querySelector(".mono"),
-                    { y: 8, opacity: 0, duration: 0.6 },
-                    0.9,
-                  );
               });
             gsap.utils
               .toArray<HTMLElement>(".cinematic-intro h1, .finance-copy h1")
@@ -167,21 +134,19 @@ export function Motion() {
                   },
                 );
               });
-            gsap.utils
-              .toArray<HTMLElement>("[data-reveal]")
-              .forEach((element) => {
-                gsap.from(element, {
-                  y: 24,
-                  opacity: 0,
-                  duration: 0.7,
-                  ease: "power3.out",
-                  scrollTrigger: {
-                    trigger: element,
-                    start: "top 95%",
-                    once: true,
-                  },
-                });
+            revealTargets.forEach((element) => {
+              gsap.from(element, {
+                y: 24,
+                opacity: 0,
+                duration: 0.7,
+                ease: "power3.out",
+                scrollTrigger: {
+                  trigger: element,
+                  start: "top 95%",
+                  once: true,
+                },
               });
+            });
             gsap.utils
               .toArray<HTMLElement>("[data-image-reveal]")
               .forEach((element) => {
@@ -214,6 +179,6 @@ export function Motion() {
       cancelAnimationFrame(refreshFrame);
       media.revert();
     };
-  }, [pathname]);
+  }, []);
   return null;
 }

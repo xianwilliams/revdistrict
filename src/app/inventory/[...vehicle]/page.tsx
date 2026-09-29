@@ -1,3 +1,4 @@
+import { Motion } from "@/components/motion";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound, permanentRedirect } from "next/navigation";
@@ -270,6 +271,7 @@ export default async function VehiclePage({ params }: Props) {
           }}
         />
       )}
+      <Motion />
     </>
   );
 }

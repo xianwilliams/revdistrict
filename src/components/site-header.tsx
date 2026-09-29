@@ -9,20 +9,14 @@ export function SiteHeader() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
   return (
-    <header
-      className={`site-header ${pathname === "/" ? "site-header--home" : ""}`}
-    >
+    <header className="site-header">
       <Link href="/" aria-label="RevDistrict home" className="brand">
         <img
-          src="/images/revdistrict-mark.webp"
-          width="88"
-          height="88"
+          src="/images/revdistrict-original.png"
+          width="1254"
+          height="1254"
           alt="RevDistrict"
         />
-        <span className="brand-word">
-          REV<span>DISTRICT</span>
-          <small>DRIVEN BY PEOPLE.</small>
-        </span>
       </Link>
       <nav className="desktop-nav" aria-label="Main navigation">
         {navigation.map((n) => (

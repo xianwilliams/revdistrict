@@ -1,6 +1,8 @@
+import { Motion } from "@/components/motion";
 import type { Metadata } from "next";
 import { ArrowUpRight } from "lucide-react";
 import { AmbientFilm } from "@/components/ambient-film";
+import { DistrictLogo } from "@/components/district-logo";
 import { Film } from "@/components/film";
 import { Visit } from "@/components/visit";
 import { ButtonLink } from "@/components/ui";
@@ -43,20 +45,7 @@ export default function StoryPage() {
         <Film kind="story" />
       </section>
       <section className="manifesto section" data-motion-section>
-        <div className="brand-reveal" data-brand-reveal>
-          <svg className="brand-orbit" viewBox="0 0 500 500" aria-hidden="true">
-            <circle cx="250" cy="250" r="236" />
-            <path d="M 14 250 A 236 236 0 0 1 486 250" />
-          </svg>
-          <img
-            src="/images/revdistrict-mark.webp"
-            width="360"
-            height="360"
-            alt="RevDistrict"
-            loading="lazy"
-          />
-          <span className="mono">A NEW CHAPTER. THE SAME ROOTS.</span>
-        </div>
+        <DistrictLogo />
         <article>
           <h2 data-reveal>
             There’s a story
@@ -105,6 +94,7 @@ export default function StoryPage() {
         <Film />
       </section>
       <Visit />
+      <Motion />
     </>
   );
 }

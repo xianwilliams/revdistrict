@@ -57,24 +57,6 @@ h2 .gold {
 .button--gold:hover::before {
   transform: translateX(110%);
 }
-.brand-word {
-  font-family: var(--font-body);
-  letter-spacing: -0.06em;
-}
-.site-header--home {
-  padding-top: 10px;
-  height: 110px;
-  border-bottom: 0;
-}
-.site-header--home .brand {
-  gap: 16px;
-}
-.site-header--home .desktop-nav {
-  gap: 22px;
-}
-.site-header--home .header-contact {
-  font-size: 10px;
-}
 .menu-panel nav a {
   text-transform: uppercase;
   font-weight: 700;
@@ -83,8 +65,8 @@ h2 .gold {
   font-size: clamp(22px, 3vw, 36px);
 }
 .hero {
-  height: 90svh;
-  min-height: 670px;
+  height: calc(100svh - var(--header));
+  min-height: 640px;
   max-height: 880px;
   position: relative;
   isolation: isolate;
@@ -124,7 +106,7 @@ h2 .gold {
 }
 .hero-copy {
   position: relative;
-  padding: clamp(166px, 19vh, 220px) calc(var(--gutter) + 42px) 160px;
+  padding: clamp(100px, 12vh, 140px) calc(var(--gutter) + 42px) 240px;
   width: fit-content;
   max-width: 100%;
 }
@@ -157,9 +139,6 @@ h2 .gold {
   color: #e3e0d9;
   line-height: 1.85;
 }
-.hero-intro .button {
-  min-width: 227px;
-}
 .hero-side-note {
   position: absolute;
   right: calc(var(--gutter) + 21px);
@@ -171,61 +150,58 @@ h2 .gold {
 }
 .hero-bottom {
   position: absolute;
-  bottom: 34px;
-  left: calc(var(--gutter) + 58px);
-  right: calc(var(--gutter) + 28px);
+  bottom: 32px;
+  left: calc(var(--gutter) + 42px);
+  right: calc(var(--gutter) + 42px);
+}
+.hero-services {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  border-top: 1px solid #ffffff50;
+  border-bottom: 1px solid #ffffff30;
+  background: #080808d9;
+}
+.hero-services a {
   display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: 34px;
+  align-items: center;
+  gap: 16px;
+  min-height: 106px;
+  padding: 20px 24px;
+  transition: background 0.2s;
 }
-.hero-chapters {
-  display: flex;
-  gap: clamp(25px, 4.2vw, 70px);
+.hero-services a + a {
+  border-left: 1px solid #ffffff30;
 }
-.hero-chapters button {
-  position: relative;
-  text-align: left;
-  padding: 14px 0 0 17px;
-  color: #e6e2db;
+.hero-services a:hover {
+  background: #e5aa3d18;
 }
-.hero-chapters button:before {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 15px;
-  bottom: 2px;
-  width: 1px;
-  background: #ffffff40;
-  transition: background 0.3s;
+.hero-service-icon {
+  color: var(--accent);
+  flex-shrink: 0;
 }
-.hero-chapters button[aria-pressed="true"]:before {
-  background: var(--accent);
-  width: 2px;
-}
-.hero-chapters .mono {
+.hero-services strong {
   display: block;
-  font-size: 7px;
-  color: #c4b9a7;
-  letter-spacing: 0.15em;
-  margin-bottom: 5px;
-}
-.hero-chapters strong {
   text-transform: uppercase;
-  font-weight: 700;
-  font-family: var(--font-display);
-  font-size: clamp(14px, 1.35vw, 22px);
-  font-weight: 700;
-  line-height: 1.2;
+  font-size: clamp(13px, 1.15vw, 19px);
+  line-height: 1.3;
 }
-.hero-chapters button[aria-pressed="true"] strong {
+.hero-services a > span > span {
+  display: block;
+  margin-top: 6px;
+  font-size: 11px;
+  color: #c9c5bd;
+}
+.hero-service-arrow {
+  margin-left: auto;
+  flex-shrink: 0;
   color: var(--accent);
 }
 .hero-film-controls {
   display: flex;
   gap: 26px;
   align-items: center;
-  padding-bottom: 1px;
+  justify-content: flex-end;
+  margin-top: 16px;
 }
 .hero-story-link {
   min-height: 44px;
@@ -285,8 +261,8 @@ h2 .gold {
 .inventory-feature {
   position: relative;
   overflow: hidden;
-  padding-top: 75px;
-  padding-bottom: 85px;
+  padding-top: 48px;
+  padding-bottom: 56px;
   background: #080808;
 }
 .drive-heading {
@@ -433,12 +409,6 @@ h2 .gold {
   font-size: 20px;
   letter-spacing: 3px;
 }
-.dial-count {
-  fill: #ad9f87;
-  font-family: var(--font-mono);
-  font-size: 8px;
-  letter-spacing: 1.5px;
-}
 .dial-annotation {
   display: flex;
   align-items: center;
@@ -461,7 +431,7 @@ h2 .gold {
   justify-content: space-between;
   gap: 24px;
   border-bottom: 1px solid var(--line);
-  margin: 60px 0 34px;
+  margin: 24px 0 28px;
 }
 .drive-tabs {
   display: flex;
@@ -628,104 +598,6 @@ h2 .gold {
   background: #0003;
   backdrop-filter: blur(4px);
 }
-.paths-section {
-  padding-top: 70px;
-  padding-bottom: 75px;
-}
-.paths-intro {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-  gap: 40px;
-  margin-bottom: 38px;
-}
-.paths-intro h2 {
-  font-size: clamp(42px, 4.5vw, 72px);
-}
-.paths-intro > p {
-  color: var(--muted);
-  font-size: 13px;
-  max-width: 260px;
-  padding-bottom: 7px;
-}
-.path-list {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 26px;
-}
-.path-row {
-  display: block;
-  min-width: 0;
-}
-.path-visual {
-  position: relative;
-  aspect-ratio: 1.75;
-  overflow: hidden;
-  background: var(--surface);
-}
-.path-visual:after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(0deg, #0009, transparent 50%);
-}
-.path-visual img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 1s var(--ease);
-  filter: saturate(0.7);
-}
-.path-visual > .mono {
-  position: absolute;
-  bottom: 24px;
-  left: 24px;
-  right: 24px;
-  font-size: 7px;
-  color: #e2d7c5;
-  z-index: 1;
-}
-.path-visual > svg {
-  position: absolute;
-  top: 18px;
-  right: 18px;
-  color: var(--ink);
-  width: 44px;
-  height: 44px;
-  padding: 10px;
-  border: 1px solid #fff5;
-  border-radius: 50%;
-  background: #0004;
-  z-index: 1;
-  transition: transform 0.4s;
-}
-.path-copy {
-  padding-top: 26px;
-}
-.path-copy h3 {
-  font-size: clamp(27px, 2.5vw, 38px);
-  margin-bottom: 14px;
-}
-.path-copy p {
-  font-size: 13px;
-  color: var(--muted);
-  max-width: 320px;
-  line-height: 1.85;
-}
-.path-label {
-  display: inline-block;
-  font-size: 8px;
-  color: var(--accent);
-  margin-top: 23px;
-  border-bottom: 1px solid #60451f;
-  padding-bottom: 10px;
-}
-.path-row:hover .path-visual img {
-  transform: scale(1.07);
-}
-.path-row:hover .path-visual > svg {
-  transform: rotate(45deg);
-}
 .visit-section {
   position: relative;
   isolation: isolate;
@@ -858,12 +730,9 @@ h2 .gold {
 .faq-section h2 {
   font-size: clamp(42px, 3.6vw, 60px);
 }
-.footer-brand {
-  font-family: var(--font-body);
-}
 @media (min-width: 1700px) {
   .drive-heading {
-    min-height: 420px;
+    min-height: 360px;
   }
 }
 @media (max-width: 1100px) {
@@ -876,11 +745,8 @@ h2 .gold {
   .hero-film-controls .hero-story-link {
     display: none;
   }
-  .hero-chapters {
-    gap: 25px;
-  }
   .drive-heading {
-    min-height: 440px;
+    min-height: 340px;
   }
   .drive-copy h2 {
     font-size: 62px;
@@ -907,14 +773,6 @@ h2 .gold {
   .story-inset {
     right: -10px;
   }
-  .path-list {
-    gap: 20px;
-  }
-  .path-visual > .mono {
-    left: 15px;
-    right: 15px;
-    font-size: 6px;
-  }
   .visit-section {
     gap: 7%;
   }
@@ -923,16 +781,9 @@ h2 .gold {
   }
 }
 @media (max-width: 700px) {
-  .site-header--home {
-    height: 86px;
-    padding-top: 0;
-  }
-  .site-header--home .brand {
-    gap: 10px;
-  }
   .hero {
-    min-height: 770px;
-    height: 100svh;
+    min-height: 700px;
+    height: calc(100svh - var(--header));
     max-height: 950px;
   }
   .hero-frame {
@@ -947,7 +798,7 @@ h2 .gold {
       linear-gradient(0deg, #000d, transparent 45%, #0009 83%);
   }
   .hero-copy {
-    padding: 180px 32px 190px;
+    padding: 100px 32px 300px;
     width: 100%;
   }
   .hero-copy .eyebrow {
@@ -971,13 +822,10 @@ h2 .gold {
   .hero-intro p br {
     display: none;
   }
-  .hero-intro .button {
-    min-width: 207px;
-  }
   .hero-side-note {
     right: 24px;
     top: auto;
-    bottom: 192px;
+    bottom: 335px;
     font-size: 7px;
   }
   .hero-bottom {
@@ -986,28 +834,6 @@ h2 .gold {
     right: 30px;
     flex-wrap: wrap;
     gap: 20px;
-  }
-  .hero-chapters {
-    width: 100%;
-    justify-content: space-between;
-    gap: 12px;
-  }
-  .hero-chapters button {
-    min-height: 44px;
-    padding: 8px 0 8px 10px;
-  }
-  .hero-chapters button:before {
-    top: 10px;
-    bottom: 10px;
-  }
-  .hero-chapters .mono {
-    display: none;
-  }
-  .hero-chapters strong {
-    text-transform: uppercase;
-    font-weight: 700;
-    font-size: 11px;
-    white-space: nowrap;
   }
   .hero-film-controls {
     width: 100%;
@@ -1037,12 +863,12 @@ h2 .gold {
     font-size: 27px;
   }
   .inventory-feature {
-    padding-top: 65px;
-    padding-bottom: 75px;
+    padding-top: 44px;
+    padding-bottom: 48px;
   }
   .drive-heading {
     grid-template-columns: 1fr;
-    gap: 38px;
+    gap: 20px;
     min-height: 0;
   }
   .drive-copy .eyebrow {
@@ -1073,7 +899,7 @@ h2 .gold {
     margin-top: 15px;
   }
   .drive-toolbar {
-    margin: 38px 0 28px;
+    margin: 20px 0 24px;
     flex-direction: column;
     align-items: flex-start;
     gap: 10px;
@@ -1178,55 +1004,6 @@ h2 .gold {
   .film-edge-label {
     font-size: 6px;
   }
-  .paths-section {
-    padding-top: 75px;
-    padding-bottom: 75px;
-  }
-  .paths-intro {
-    display: block;
-    margin-bottom: 40px;
-  }
-  .paths-intro h2 {
-    font-size: clamp(37px, 9.2vw, 60px);
-  }
-  .paths-intro > p {
-    margin-top: 25px;
-    font-size: 12px;
-  }
-  .path-list {
-    grid-template-columns: 1fr;
-    gap: 45px;
-  }
-  .path-row:nth-child(2),
-  .path-row:nth-child(3) {
-    padding-top: 0;
-  }
-  .path-row:nth-child(2) {
-    padding-left: 30px;
-  }
-  .path-row:nth-child(3) {
-    padding-right: 30px;
-  }
-  .path-visual {
-    aspect-ratio: 1.16;
-  }
-  .path-visual > .mono {
-    font-size: 6px;
-    bottom: 20px;
-  }
-  .path-copy {
-    padding-top: 20px;
-  }
-  .path-copy h3 {
-    font-size: 39px;
-  }
-  .path-copy p {
-    font-size: 12px;
-  }
-  .path-label {
-    font-size: 7px;
-    margin-top: 18px;
-  }
   .visit-section {
     grid-template-columns: 1fr;
     gap: 60px;
@@ -1308,11 +1085,6 @@ h2 .gold {
   .hero h1 {
     font-size: 39px;
   }
-  .hero-chapters strong {
-    text-transform: uppercase;
-    font-weight: 700;
-    font-size: 10px;
-  }
   .brand-strip p {
     text-transform: uppercase;
     font-weight: 700;
@@ -1334,7 +1106,7 @@ h2 .gold {
 
 @media (min-width: 701px) {
   .dial-stage {
-    max-width: 440px;
+    max-width: 380px;
     justify-self: center;
   }
   .drive-copy h2 {
@@ -1349,12 +1121,6 @@ h2 .gold {
   .featured-grid .vehicle-card:nth-child(3) {
     margin-top: 56px;
   }
-  .paths-intro h2 {
-    font-size: clamp(38px, 3.6vw, 58px);
-  }
-  .path-copy h3 {
-    font-size: clamp(24px, 2.2vw, 34px);
-  }
   .desktop-nav {
     gap: 22px;
   }
@@ -1364,5 +1130,47 @@ h2 .gold {
   .brand-strip {
     padding-top: 25px;
     padding-bottom: 25px;
+  }
+}
+
+@media (max-width: 1100px) and (min-width: 701px) {
+  .hero-services a {
+    padding: 18px 14px;
+    gap: 10px;
+  }
+  .hero-services a > span > span {
+    font-size: 10px;
+  }
+  .hero-service-arrow {
+    display: none;
+  }
+}
+@media (max-width: 700px) {
+  .hero-services {
+    grid-template-columns: 1fr;
+    width: 100%;
+  }
+  .hero-services a {
+    min-height: 72px;
+    padding: 14px 16px;
+    gap: 16px;
+  }
+  .hero-services a + a {
+    border-left: 0;
+    border-top: 1px solid #ffffff30;
+  }
+  .hero-services strong {
+    font-size: 13px;
+  }
+  .hero-services a > span > span {
+    margin-top: 2px;
+    font-size: 10px;
+  }
+  .hero-service-icon {
+    width: 24px;
+    height: 24px;
+  }
+  .hero-film-controls {
+    margin-top: 0;
   }
 }

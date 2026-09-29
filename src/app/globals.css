@@ -274,41 +274,6 @@ button:active,
   border-bottom: 1px solid var(--line);
   background: var(--canvas);
 }
-.site-header--home {
-  position: absolute;
-  width: 100%;
-  background: transparent;
-  border-color: #ffffff20;
-}
-.brand {
-  display: flex;
-  gap: 13px;
-  align-items: center;
-}
-.brand img {
-  width: 58px;
-  height: 58px;
-  object-fit: cover;
-  border-radius: 2px;
-}
-.brand-word {
-  font-size: 22px;
-  letter-spacing: -1px;
-  font-weight: 750;
-  line-height: 1;
-}
-.brand-word > span {
-  font-weight: 350;
-}
-.brand-word small {
-  display: block;
-  font-family: var(--font-mono);
-  font-size: 7px;
-  letter-spacing: 2.4px;
-  font-weight: 400;
-  margin-top: 7px;
-  color: var(--accent);
-}
 .desktop-nav {
   display: flex;
   align-items: center;
@@ -660,24 +625,6 @@ button:active,
   gap: 60px;
   padding-bottom: 70px;
 }
-.footer-brand {
-  font-size: 36px;
-  letter-spacing: -2px;
-  line-height: 1;
-  font-weight: 700;
-}
-.footer-brand > span {
-  font-weight: 300;
-}
-.footer-brand > i {
-  font-family: var(--font-mono);
-  font-size: 8px;
-  display: block;
-  letter-spacing: 0.11em;
-  color: var(--muted);
-  font-style: normal;
-  margin-top: 18px;
-}
 .footer-links {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -784,11 +731,77 @@ button:active,
 .mobile-filter-toggle {
   display: none;
 }
-.inventory-filters > label {
+.filter-fields > label {
   display: block;
   font-size: 11px;
   margin-bottom: 24px;
   color: var(--muted);
+}
+.checkbox-filter {
+  margin-bottom: 24px;
+  border-bottom: 1px solid var(--line);
+}
+.checkbox-filter summary {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  padding-bottom: 12px;
+  font-size: 11px;
+  color: var(--muted);
+}
+.checkbox-filter summary::-webkit-details-marker {
+  display: none;
+}
+.checkbox-filter summary strong {
+  display: block;
+  margin-top: 16px;
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--ink);
+}
+.checkbox-filter[open] summary > svg {
+  transform: rotate(180deg);
+}
+.checkbox-filter fieldset {
+  border: 0;
+  padding: 0 4px 12px;
+  margin: 0;
+  max-height: 240px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+.checkbox-filter label {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  min-height: 44px;
+  font-size: 12px;
+  cursor: pointer;
+}
+.checkbox-filter input {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--accent);
+  flex-shrink: 0;
+}
+.filter-search {
+  width: 100%;
+  justify-content: space-between;
+  min-height: 44px;
+  padding: 0 16px;
+}
+.filter-clear {
+  font-size: 11px;
+  color: var(--muted);
+  min-height: 44px;
+}
+.saved-help {
+  font-size: 11px;
+  color: var(--muted);
+  line-height: 1.7;
+  margin-top: 12px;
 }
 .inventory-filters select {
   display: block;
@@ -2122,13 +2135,6 @@ button:active,
   .desktop-nav {
     gap: 20px;
   }
-  .brand-word {
-    font-size: 19px;
-  }
-  .brand img {
-    width: 49px;
-    height: 49px;
-  }
   .header-actions {
     gap: 18px;
   }
@@ -2155,9 +2161,6 @@ button:active,
   }
   .footer-top {
     gap: 35px;
-  }
-  .footer-brand {
-    font-size: 30px;
   }
   .finance-hero {
     gap: 7%;
@@ -2217,9 +2220,6 @@ button:active,
   .footer-top {
     grid-template-columns: 1fr 1fr;
     gap: 45px;
-  }
-  .footer-brand {
-    grid-column: 1/-1;
   }
   .footer-bottom {
     flex-wrap: wrap;
@@ -2376,20 +2376,6 @@ button:active,
   .site-header {
     padding: 0 20px;
   }
-  .brand {
-    gap: 10px;
-  }
-  .brand img {
-    width: 46px;
-    height: 46px;
-  }
-  .brand-word {
-    font-size: 18px;
-  }
-  .brand-word small {
-    font-size: 6px;
-    letter-spacing: 1.9px;
-  }
   .header-contact {
     display: none;
   }
@@ -2480,9 +2466,6 @@ button:active,
   .footer-top {
     gap: 35px;
     padding-bottom: 45px;
-  }
-  .footer-brand {
-    font-size: 32px;
   }
   .footer-links {
     grid-template-columns: 1fr;
@@ -2589,7 +2572,7 @@ button:active,
   .inventory-filters.is-open {
     display: block;
   }
-  .inventory-filters > label {
+  .filter-fields > label {
     margin-bottom: 20px;
   }
   .inventory-filters select {

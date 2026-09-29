@@ -1,18 +1,3 @@
-/* Buying, consignment and application flows share the existing design tokens. */
-.paths-alternative {
-  margin-top: 30px;
-  padding-top: 22px;
-  border-top: 1px solid var(--line);
-  color: var(--muted);
-  font-size: 13px;
-}
-.paths-alternative a {
-  color: var(--accent);
-  margin-left: 8px;
-  white-space: nowrap;
-  text-decoration: underline;
-  text-underline-offset: 4px;
-}
 .finance-options {
   background: var(--surface);
 }
@@ -390,15 +375,6 @@
   .consignment-process .section-heading > p {
     margin-top: 24px;
     font-size: 13px;
-  }
-  .paths-alternative {
-    line-height: 1.9;
-  }
-  .paths-alternative a {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    margin-left: 0;
   }
   .finance-options-grid {
     grid-template-columns: 1fr;

@@ -1,3 +1,4 @@
+import { Motion } from "@/components/motion";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowUpRight, Phone, Mail, MapPin, MessageSquare } from "lucide-react";
@@ -121,6 +122,7 @@ export default function ContactPage() {
           </span>
         </a>
       </section>
+      <Motion />
     </>
   );
 }

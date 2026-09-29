@@ -1,3 +1,4 @@
+import { Motion } from "@/components/motion";
 import type { Metadata } from "next";
 import Link from "next/link";
 import {
@@ -157,6 +158,7 @@ export default function ConsignmentPage() {
           ))}
         </div>
       </section>
+      <Motion />
     </>
   );
 }

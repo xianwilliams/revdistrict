@@ -8,6 +8,7 @@ import {
   ArrowRight,
   ArrowLeft,
   Heart,
+  ChevronDown,
 } from "lucide-react";
 import { type Vehicle, matchesMode, driveModes } from "@/lib/vehicle";
 import { VehicleCard } from "./vehicle-card";
@@ -28,17 +29,21 @@ export function InventoryBrowser({ vehicles }: { vehicles: Vehicle[] }) {
     return () => window.removeEventListener("revdistrict-saved", update);
   }, []);
   const query = params.get("q") || "",
-    make = params.get("make") || "",
+    makes = params.getAll("make"),
+    models = params.getAll("model"),
     body = params.get("body") || "",
     budget = Number(params.get("budget")) || 0,
+    mileage = Number(params.get("mileage")) || 0,
     mode = params.get("mode") || "all",
     sort = params.get("sort") || "featured",
     onlySaved = params.get("saved") === "true";
-  function change(values: Record<string, string>) {
+  function change(values: Record<string, string | string[]>) {
     const next = new URLSearchParams(window.location.search);
     for (const [key, value] of Object.entries(values)) {
-      if (value) next.set(key, value);
-      else next.delete(key);
+      next.delete(key);
+      for (const item of Array.isArray(value) ? value : [value]) {
+        if (item) next.append(key, item);
+      }
     }
     if (!("page" in values)) next.delete("page");
     window.history.replaceState(
@@ -53,9 +58,11 @@ export function InventoryBrowser({ vehicles }: { vehicles: Vehicle[] }) {
         `${v.name} ${v.stock} ${v.vin}`
           .toLowerCase()
           .includes(query.toLowerCase())) &&
-      (!make || v.make === make) &&
+      (!makes.length || makes.includes(v.make)) &&
+      (!models.length || models.includes(v.model)) &&
       (!body || v.body === body) &&
       (!budget || (v.price > 0 && v.price <= budget)) &&
+      (!mileage || (v.mileage > 0 && v.mileage <= mileage)) &&
       matchesMode(v, mode) &&
       (!onlySaved || saved.includes(v.id)),
   );
@@ -76,22 +83,42 @@ export function InventoryBrowser({ vehicles }: { vehicles: Vehicle[] }) {
       Math.max(1, totalPages),
     );
   const shown = filtered.slice((page - 1) * 12, page * 12);
-  const makes = [...new Set(vehicles.map((v) => v.make))].sort();
-  const active = query || make || body || budget || mode !== "all" || onlySaved;
+  const active =
+    query ||
+    makes.length ||
+    models.length ||
+    body ||
+    budget ||
+    mileage ||
+    mode !== "all" ||
+    onlySaved;
+  const [resetCount, setResetCount] = useState(0);
+  function reset() {
+    window.history.replaceState(null, "", "/inventory");
+    setResetCount((count) => count + 1);
+  }
   return (
     <div className="inventory-browser">
       <form
         className="inventory-search"
+        id="inventory-search"
         onSubmit={(event) => {
           event.preventDefault();
+          const form = new FormData(event.currentTarget);
           change({
-            q: String(new FormData(event.currentTarget).get("q") || ""),
+            q: String(form.get("q") || "").trim(),
+            make: form.getAll("make").map(String),
+            model: form.getAll("model").map(String),
+            body: String(form.get("body") || ""),
+            budget: String(form.get("budget") || ""),
+            mileage: String(form.get("mileage") || ""),
           });
+          setFiltersOpen(false);
         }}
       >
         <Search size={20} />
         <input
-          key={query}
+          key={`${query}-${resetCount}`}
           name="q"
           type="search"
           defaultValue={query}
@@ -114,58 +141,26 @@ export function InventoryBrowser({ vehicles }: { vehicles: Vehicle[] }) {
               <X size={20} />
             </button>
           </div>
-          <label>
-            Drive style
-            <select
-              aria-label="Drive style"
-              value={mode}
-              onChange={(e) => change({ mode: e.target.value })}
+          <InventoryFilterFields
+            key={`${JSON.stringify({ makes, models, budget, body, mileage })}-${resetCount}`}
+            vehicles={vehicles}
+            initialMakes={makes}
+            initialModels={models}
+            budget={budget}
+            body={body}
+            mileage={mileage}
+            onReset={reset}
+          />
+          {mode !== "all" && (
+            <button
+              className="reset-filters"
+              onClick={() => change({ mode: "" })}
             >
-              {driveModes.map((m) => (
-                <option key={m.id} value={m.id}>
-                  {m.label}
-                </option>
-              ))}
-            </select>
-          </label>
-          <label>
-            Make
-            <select
-              value={make}
-              onChange={(e) => change({ make: e.target.value })}
-            >
-              <option value="">All makes</option>
-              {makes.map((m) => (
-                <option key={m}>{m}</option>
-              ))}
-            </select>
-          </label>
-          <label>
-            Body style
-            <select
-              value={body}
-              onChange={(e) => change({ body: e.target.value })}
-            >
-              <option value="">All body styles</option>
-              {["Car", "SUV", "Truck", "Van", "Other"].map((b) => (
-                <option key={b}>{b}</option>
-              ))}
-            </select>
-          </label>
-          <label>
-            Max price
-            <select
-              value={budget || ""}
-              onChange={(e) => change({ budget: e.target.value })}
-            >
-              <option value="">Any budget</option>
-              {[10000, 15000, 20000, 30000, 40000, 50000, 75000].map((p) => (
-                <option value={p} key={p}>
-                  Under ${p.toLocaleString()}
-                </option>
-              ))}
-            </select>
-          </label>
+              {driveModes.find((item) => item.id === mode)?.label || mode}{" "}
+              <X size={14} />
+              <span className="sr-only">Remove drive style</span>
+            </button>
+          )}
           <button
             className={`saved-filter ${onlySaved ? "is-active" : ""}`}
             aria-pressed={onlySaved}
@@ -173,13 +168,12 @@ export function InventoryBrowser({ vehicles }: { vehicles: Vehicle[] }) {
           >
             <Heart size={16} /> Saved vehicles <span>{saved.length}</span>
           </button>
+          <p className="saved-help">
+            No account needed. Saved on this browser only. Clearing site data
+            clears your saved vehicles.
+          </p>
           {active && (
-            <button
-              className="reset-filters"
-              onClick={() =>
-                window.history.replaceState(null, "", "/inventory")
-              }
-            >
+            <button className="reset-filters" onClick={reset}>
               Reset all filters <X size={14} />
             </button>
           )}
@@ -254,15 +248,10 @@ export function InventoryBrowser({ vehicles }: { vehicles: Vehicle[] }) {
               <Search size={36} />
               <h2>A little too specific?</h2>
               <p>
-                Try a different make, budget, or drive style. Your next car
+                Try a different make, model, price, or mileage. Your next car
                 might be one filter away.
               </p>
-              <button
-                className="button button--gold"
-                onClick={() =>
-                  window.history.replaceState(null, "", "/inventory")
-                }
-              >
+              <button className="button button--gold" onClick={reset}>
                 Clear filters <ArrowRight size={18} />
               </button>
             </div>
@@ -270,5 +259,164 @@ export function InventoryBrowser({ vehicles }: { vehicles: Vehicle[] }) {
         </div>
       </div>
     </div>
+  );
+}
+
+function InventoryFilterFields({
+  vehicles,
+  initialMakes,
+  initialModels,
+  budget,
+  body,
+  mileage,
+  onReset,
+}: {
+  vehicles: Vehicle[];
+  initialMakes: string[];
+  initialModels: string[];
+  budget: number;
+  body: string;
+  mileage: number;
+  onReset: () => void;
+}) {
+  const [makes, setMakes] = useState(initialMakes);
+  const [models, setModels] = useState(initialModels);
+  const availableMakes = [...new Set(vehicles.map((v) => v.make))].sort();
+  const availableModels = [
+    ...new Set(
+      vehicles
+        .filter((v) => !makes.length || makes.includes(v.make))
+        .map((v) => v.model),
+    ),
+  ].sort();
+  function toggleMake(make: string) {
+    const next = makes.includes(make)
+      ? makes.filter((item) => item !== make)
+      : [...makes, make];
+    setMakes(next);
+    setModels((current) =>
+      current.filter((model) =>
+        vehicles.some(
+          (v) => v.model === model && (!next.length || next.includes(v.make)),
+        ),
+      ),
+    );
+  }
+  return (
+    <div className="filter-fields">
+      <label>
+        Max price
+        <select
+          name="budget"
+          form="inventory-search"
+          defaultValue={budget || ""}
+        >
+          <option value="">Any budget</option>
+          {[10000, 15000, 20000, 30000, 40000, 50000, 75000].map((price) => (
+            <option value={price} key={price}>
+              Up to ${price.toLocaleString()}
+            </option>
+          ))}
+        </select>
+      </label>
+      <CheckboxFilter
+        label="Make"
+        name="make"
+        options={availableMakes}
+        selected={makes}
+        onToggle={toggleMake}
+      />
+      <CheckboxFilter
+        label="Model"
+        name="model"
+        options={availableModels}
+        selected={models}
+        onToggle={(model) =>
+          setModels((current) =>
+            current.includes(model)
+              ? current.filter((item) => item !== model)
+              : [...current, model],
+          )
+        }
+      />
+      <label>
+        Body style
+        <select name="body" form="inventory-search" defaultValue={body}>
+          <option value="">All body styles</option>
+          {["Car", "SUV", "Truck", "Van", "Other"].map((value) => (
+            <option key={value}>{value}</option>
+          ))}
+        </select>
+      </label>
+      <label>
+        Max mileage
+        <select
+          name="mileage"
+          form="inventory-search"
+          defaultValue={mileage || ""}
+        >
+          <option value="">Any mileage</option>
+          {[25000, 50000, 75000, 100000, 150000, 200000].map((value) => (
+            <option value={value} key={value}>
+              Up to {value.toLocaleString()} mi
+            </option>
+          ))}
+        </select>
+      </label>
+      <button
+        className="button button--gold filter-search"
+        type="submit"
+        form="inventory-search"
+      >
+        Search <Search size={16} />
+      </button>
+      <button className="filter-clear" type="button" onClick={onReset}>
+        Clear selections
+      </button>
+    </div>
+  );
+}
+
+function CheckboxFilter({
+  label,
+  name,
+  options,
+  selected,
+  onToggle,
+}: {
+  label: string;
+  name: string;
+  options: string[];
+  selected: string[];
+  onToggle: (value: string) => void;
+}) {
+  return (
+    <details className="checkbox-filter">
+      <summary>
+        <span>
+          {label}
+          <strong>
+            {selected.length ? `${selected.length} selected` : `All ${name}s`}
+          </strong>
+        </span>
+        <ChevronDown size={15} aria-hidden="true" />
+      </summary>
+      <fieldset>
+        <legend className="sr-only">{label}</legend>
+        {options.map((option) => (
+          <label key={option}>
+            <input
+              type="checkbox"
+              name={name}
+              form="inventory-search"
+              value={option}
+              checked={selected.includes(option)}
+              onChange={() => onToggle(option)}
+            />
+            <span>{option}</span>
+          </label>
+        ))}
+      </fieldset>
+    </details>
   );
 }

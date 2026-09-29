@@ -1,3 +1,4 @@
+import { Motion } from "@/components/motion";
 import type { Metadata } from "next";
 import { ArrowDownRight } from "lucide-react";
 import { AmbientFilm } from "@/components/ambient-film";
@@ -73,6 +74,7 @@ export default function SellPage() {
           <LeadForm kind="trade" />
         </div>
       </section>
+      <Motion />
     </>
   );
 }

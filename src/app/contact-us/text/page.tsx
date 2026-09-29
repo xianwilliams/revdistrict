@@ -1,3 +1,4 @@
+import { Motion } from "@/components/motion";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
@@ -25,6 +26,7 @@ export default function TextPage() {
         .
       </p>
       <LeadForm kind="text" />
+      <Motion />
     </section>
   );
 }

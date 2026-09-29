@@ -1,8 +1,18 @@
 # Verification and review handoff
 
-Checked September 24, 2026 against the compiled Next.js application, served through the included `server.cjs`. The review preview is running at **http://localhost:3001**. To restart it: `npm run build`, then `PORT=3001 node server.cjs`. Normal development uses `npm run dev` at http://localhost:3000.
+Latest revision checked September 29, 2026 against the compiled Next.js application, served through the included `server.cjs`. The review preview is running at **http://localhost:3001**. To restart it: `npm run build`, then `PORT=3001 node server.cjs`. Normal development uses `npm run dev` at http://localhost:3000.
 
-## Completed checks
+## September 29 website revision
+
+Review at **http://localhost:3001** (production build); development remains at **http://localhost:3000**. Home now presents the three service links inside the video hero, with the duplicated service section removed. The original colored PNG bridges the navigation and hero; the footer and District page use the same source. The gauge quantity is removed and the inventory stage is more compact. The inventory sidebar follows max price → make → model → body style → max mileage, with multiple makes/models applied together on Search. README documents account-free local saved vehicles.
+
+The District logo uses the unchanged original PNG in SVG layers, with only the needle rotating as scroll position changes. Its stationary mask clears the needle’s highlight and shadow; its tighter moving clip avoids lifting an adjacent gauge tick. Reduced motion restores the original orientation. Final stills, mobile filters, and forward/reverse needle states are in ignored `research/client-review/`. Home, inventory and District were inspected at 1440px, 390px and 360px with no horizontal overflow. Normal-motion needle captures showed no JavaScript errors; reversal returned to the same angle.
+
+The fresh-agent review found two draft-reset defects: sorting remounted unsubmitted filters, and reset left unsubmitted text in the search box. Both have regression coverage. Visual review also reproduced an existing GSAP hydration race. Motion now mounts at the end of each applicable page’s hydration boundary, and collects reveal targets without writing HTML attributes. Normal and reduced-motion hydration tests pass. The reviewer confirmed that a shared template would remain outside Next’s loading boundary and would not reliably solve this race; the page-local component is the smaller reliable approach.
+
+Validation: production build, TypeScript, ESLint, formatting and 13 domain tests passed. All 23 browser checks passed in the final production suite, including automated WCAG checks on eleven routes. One development-only finance cache-header mismatch passes under the production server. One existing phone-layout test needed an explicit visible-content wait before measuring a streamed page. Domain tests were invoked with `node --import tsx --test tests/*.test.ts` because the sandbox blocks the tsx CLI’s IPC socket. No test sends live dealership leads. Real phone hardware and human visual approval remain outside these automated checks.
+
+## Earlier completed checks (September 24)
 
 | Check | Result |
 |---|---|

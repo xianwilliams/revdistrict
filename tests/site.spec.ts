@@ -36,6 +36,7 @@ test("inventory search, empty results, filters, saving and pagination", async ({
     .getByRole("button", { name: "Clear filters", exact: true })
     .click();
   await page.getByLabel("Body style").selectOption("Truck");
+  await page.getByRole("button", { name: "Search", exact: true }).click();
   await expect(page).toHaveURL(/body=Truck/);
   await expect(page.locator(".vehicle-card")).toHaveCount(12);
 });
@@ -49,7 +50,9 @@ test("signature drive selector carries its choice into inventory", async ({
   ).toHaveAttribute("aria-pressed", "true");
   await page.getByRole("link", { name: "View collection" }).click();
   await expect(page).toHaveURL(/mode=performance/);
-  await expect(page.getByLabel("Drive style")).toHaveValue("performance");
+  await expect(
+    page.getByRole("button", { name: /Performance Remove drive style/ }),
+  ).toBeVisible();
 });
 test("vehicle gallery, keyboard dialog and test drive intent work", async ({
   page,
@@ -187,7 +190,7 @@ test("film opens only on request, controls work, and closes with Escape", async 
   await page.keyboard.press("Escape");
   await expect(page.locator(".film-dialog video")).toHaveCount(0);
 });
-test("cinematic hero respects reduced motion, seeks chapters and exposes a pause control", async ({
+test("cinematic hero respects reduced motion and exposes a pause control", async ({
   page,
 }) => {
   const errors: string[] = [];
@@ -200,11 +203,8 @@ test("cinematic hero respects reduced motion, seeks chapters and exposes a pause
   await expect(background).toHaveAttribute("preload", "none");
   await expect(background).toHaveJSProperty("muted", true);
   await page
-    .getByRole("button", { name: /A LOT OF PERSONALITY The people/ })
+    .getByRole("button", { name: "Play background film", exact: true })
     .click();
-  await expect
-    .poll(() => background.evaluate((v: HTMLVideoElement) => v.currentTime))
-    .toBeGreaterThanOrEqual(10);
   await expect(
     page.getByRole("button", { name: "Pause background film" }),
   ).toBeVisible();
@@ -223,7 +223,7 @@ test("background film pauses when the visitor leaves the hero", async ({
   await page.goto("/");
   const background = page.locator(".hero video");
   await expect(background).toHaveJSProperty("paused", false);
-  await page.locator(".paths-section").scrollIntoViewIfNeeded();
+  await page.locator(".featured-grid").scrollIntoViewIfNeeded();
   await expect(background).toHaveJSProperty("paused", true);
 });
 test("gold sheen travels with desktop scroll after display fonts load", async ({
@@ -259,6 +259,7 @@ test("core pages pass automated accessibility checks", async ({ page }) => {
     "/sell-your-vehicle",
     "/contact-us",
     "/contact-us/text",
+    "/our-story",
   ]) {
     await page.goto(path);
     const result = await new AxeBuilder({ page })
@@ -335,7 +336,14 @@ test("client priorities are prominent and financing stays on RevDistrict", async
   await expect(
     priorities.getByRole("link", { name: /consignment/i }),
   ).toHaveAttribute("href", "/consignment");
-  await expect(priorities).toContainText("buy here, pay here");
+  await expect(priorities.getByRole("link")).toHaveCount(3);
+  await expect(
+    priorities.getByRole("link", { name: /Explore inventory/i }),
+  ).toHaveAttribute("href", "/inventory");
+  await expect(
+    priorities.getByRole("link", { name: /Financing/i }),
+  ).toHaveAttribute("href", "/financing");
+  await expect(page.locator(".hero #your-next-move")).toBeVisible();
   expect(
     await priorities.evaluate(
       (el) =>
@@ -451,6 +459,9 @@ test("new service headings stack above their descriptions on phones", async ({
     ["/financing", ".finance-options"],
   ]) {
     await page.goto(path);
+    await expect(
+      page.locator(`${section} .section-heading > div`),
+    ).toBeVisible();
     const heading = await page
       .locator(`${section} .section-heading > div`)
       .boundingBox();
@@ -460,4 +471,164 @@ test("new service headings stack above their descriptions on phones", async ({
     expect(heading!.width).toBeGreaterThan(300);
     expect(description!.y).toBeGreaterThanOrEqual(heading!.y + heading!.height);
   }
+});
+
+test("make and model checkboxes wait for Search and combine with price and mileage", async ({
+  page,
+}) => {
+  await page.goto("/inventory?page=2");
+  const fields = page.locator(".filter-fields");
+  await expect(fields.locator(":scope > label, :scope > details")).toHaveText([
+    /Max price/,
+    /Make/,
+    /Model/,
+    /Body style/,
+    /Max mileage/,
+  ]);
+  await fields.locator("summary").filter({ hasText: "Make" }).click();
+  await page.getByRole("checkbox", { name: "Acura", exact: true }).check();
+  await page.getByRole("checkbox", { name: "Audi", exact: true }).check();
+  await fields.locator("summary").filter({ hasText: "Model" }).click();
+  await page.getByRole("checkbox", { name: "Integra", exact: true }).check();
+  await page.getByRole("checkbox", { name: "A6", exact: true }).check();
+  await page.getByLabel("Max price").selectOption("40000");
+  await page.getByLabel("Max mileage").selectOption("75000");
+  await expect(page).toHaveURL(/inventory\?page=2$/);
+  await expect(page.locator(".vehicle-card")).toHaveCount(12);
+  await page.getByRole("button", { name: "Search", exact: true }).click();
+  const params = new URL(page.url()).searchParams;
+  expect(params.getAll("make")).toEqual(["Acura", "Audi"]);
+  expect(params.getAll("model")).toEqual(["A6", "Integra"]);
+  expect(params.has("page")).toBe(false);
+  await expect(page.locator(".vehicle-card")).toHaveCount(2);
+  await page.reload();
+  await expect(page.locator(".vehicle-card")).toHaveCount(2);
+  await fields.locator("summary").filter({ hasText: "Make" }).click();
+  await page.getByRole("checkbox", { name: "Acura", exact: true }).uncheck();
+  await fields.locator("summary").filter({ hasText: "Model" }).click();
+  await expect(
+    page.getByRole("checkbox", { name: "Integra", exact: true }),
+  ).toHaveCount(0);
+  await page.getByRole("button", { name: "Find your car" }).click();
+  await expect(page.locator(".vehicle-card")).toHaveCount(1);
+  await expect(page.locator(".vehicle-card h3")).toHaveText("A6");
+  await page.getByLabel("Max mileage").selectOption("25000");
+  await page.getByRole("button", { name: "Search", exact: true }).click();
+  await expect(
+    page.getByRole("heading", { name: "A little too specific?" }),
+  ).toBeVisible();
+  await page
+    .getByRole("button", { name: "Clear filters", exact: true })
+    .click();
+  await expect(page).toHaveURL("/inventory");
+  await expect(page.locator(".vehicle-card")).toHaveCount(12);
+});
+
+test("mobile filters submit all selections and saved vehicles need no account", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto("/inventory?make=Acura");
+  await page.getByRole("button", { name: "Filters", exact: true }).click();
+  await page.locator("summary").filter({ hasText: "Model" }).click();
+  await page.getByRole("checkbox", { name: "Integra", exact: true }).check();
+  await page.getByRole("button", { name: "Search", exact: true }).click();
+  await expect(page.locator(".inventory-filters")).not.toBeVisible();
+  await expect(page.locator(".vehicle-card")).toHaveCount(1);
+  await page.getByRole("button", { name: "Save vehicle", exact: true }).click();
+  await page.goto("/inventory?saved=true");
+  await expect(page.locator(".vehicle-card")).toHaveCount(1);
+  await page.reload();
+  await expect(
+    page.getByRole("button", { name: "Remove saved vehicle" }),
+  ).toBeVisible();
+  await page.getByRole("button", { name: "Filters", exact: true }).click();
+  await expect(page.locator(".saved-help")).toContainText("No account needed");
+  await page.getByRole("button", { name: "Remove saved vehicle" }).click();
+  await expect(page.locator(".vehicle-card")).toHaveCount(0);
+});
+
+test("original District logo needle follows scroll in both directions and respects reduced motion", async ({
+  page,
+}) => {
+  await page.emulateMedia({ reducedMotion: "no-preference" });
+  await page.goto("/our-story");
+  await page.evaluate(() => document.fonts.ready);
+  const logo = page.locator(".brand-reveal");
+  const needle = page.locator(".district-logo-needle");
+  const top = await logo.evaluate(
+    (el) => el.getBoundingClientRect().top + scrollY - innerHeight * 0.65,
+  );
+  await page.evaluate((y) => scrollTo({ top: y, behavior: "instant" }), top);
+  await page.waitForTimeout(600);
+  const first = await needle.evaluate((el) => getComputedStyle(el).transform);
+  await page.evaluate(
+    (y) => scrollTo({ top: y + 250, behavior: "instant" }),
+    top,
+  );
+  await page.waitForTimeout(600);
+  expect(
+    await needle.evaluate((el) => getComputedStyle(el).transform),
+  ).not.toBe(first);
+  await page.evaluate((y) => scrollTo({ top: y, behavior: "instant" }), top);
+  await page.waitForTimeout(600);
+  expect(await needle.evaluate((el) => getComputedStyle(el).transform)).toBe(
+    first,
+  );
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await expect(needle).toHaveCSS("transform", "matrix(1, 0, 0, 1, 0, 0)");
+  await expect(page.locator(".brand img")).toHaveAttribute(
+    "src",
+    "/images/revdistrict-original.png",
+  );
+});
+
+test("sorting keeps unsubmitted filter selections and Clear selections clears draft text", async ({
+  page,
+}) => {
+  await page.goto("/inventory");
+  await page.locator("summary").filter({ hasText: "Make" }).click();
+  await page.getByRole("checkbox", { name: "Acura", exact: true }).check();
+  await page.getByLabel("Max mileage").selectOption("75000");
+  await page.getByLabel("Sort vehicles").selectOption("price-low");
+  await expect(
+    page.getByRole("checkbox", { name: "Acura", exact: true }),
+  ).toBeChecked();
+  await expect(page.getByLabel("Max mileage")).toHaveValue("75000");
+  await page.getByRole("button", { name: "Search", exact: true }).click();
+  await expect(page.locator(".vehicle-card")).toHaveCount(1);
+  await page
+    .getByRole("button", { name: "Clear selections", exact: true })
+    .click();
+  await page
+    .getByRole("searchbox", { name: "Search inventory" })
+    .fill("unsubmitted search");
+  await page
+    .getByRole("button", { name: "Clear selections", exact: true })
+    .click();
+  await expect(
+    page.getByRole("searchbox", { name: "Search inventory" }),
+  ).toHaveValue("");
+});
+
+test("inventory and District pages hydrate without motion attribute mismatches", async ({
+  page,
+}) => {
+  const errors: string[] = [];
+  page.on("console", (message) => {
+    if (
+      message.type() === "error" &&
+      /hydrat|didn.t match/i.test(message.text())
+    )
+      errors.push(message.text());
+  });
+  for (const reducedMotion of ["reduce", "no-preference"] as const) {
+    await page.emulateMedia({ reducedMotion });
+    for (const path of ["/inventory", "/our-story"]) {
+      await page.goto(path);
+      await page.evaluate(() => document.fonts.ready);
+      await page.waitForTimeout(500);
+    }
+  }
+  expect(errors).toEqual([]);
 });
