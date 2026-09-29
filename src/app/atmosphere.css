@@ -531,9 +531,6 @@
 }
 
 /* Original artwork bridges the navigation and the opening scene. */
-.site-header {
-  mix-blend-mode: screen;
-}
 .site-header .brand {
   position: relative;
   width: 176px;
@@ -547,7 +544,10 @@
   width: 176px;
   height: 176px;
   object-fit: contain;
-  mix-blend-mode: screen;
+  mask-image: url("/images/revdistrict-original.png");
+  mask-mode: luminance;
+  mask-size: contain;
+  mask-repeat: no-repeat;
 }
 .footer-brand {
   display: block;

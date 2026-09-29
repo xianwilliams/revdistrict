@@ -1,3 +1,5 @@
+Work on `main` directly until the user requests a different branch workflow.
+
 <!-- BEGIN:nextjs-agent-rules -->
 
 # This is NOT the Next.js you know
