@@ -12,9 +12,9 @@ export function SiteHeader() {
     <header className="site-header">
       <Link href="/" aria-label="RevDistrict home" className="brand">
         <img
-          src="/images/revdistrict-original.png"
-          width="1254"
-          height="1254"
+          src="/images/revdistrict-transparent.png"
+          width="1536"
+          height="1024"
           alt="RevDistrict"
         />
       </Link>

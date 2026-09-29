@@ -7,9 +7,9 @@ export function SiteFooter() {
       <div className="footer-top">
         <Link href="/" className="footer-brand" aria-label="RevDistrict home">
           <img
-            src="/images/revdistrict-original.png"
-            width="1254"
-            height="1254"
+            src="/images/revdistrict-transparent.png"
+            width="1536"
+            height="1024"
             alt="RevDistrict"
             loading="lazy"
           />
