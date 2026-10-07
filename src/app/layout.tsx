@@ -32,7 +32,13 @@ export const metadata: Metadata = {
     type: "website",
     siteName: "RevDistrict",
     images: [
-      { url: "/images/hero-film-poster.webp", width: 1600, height: 800 },
+      {
+        url: "/images/revdistrict-transparent.png",
+        width: 1536,
+        height: 1024,
+        type: "image/png",
+        alt: "RevDistrict logo",
+      },
     ],
   },
   icons: { icon: "/icon.svg" },
