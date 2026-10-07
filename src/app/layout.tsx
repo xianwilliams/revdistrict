@@ -17,7 +17,9 @@ const inter = localFont({
   display: "swap",
 });
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.SITE_URL || "http://localhost:3000"),
+  metadataBase: new URL(
+    process.env.SITE_URL || "https://revdistrict.vercel.app",
+  ),
   title: {
     default: "RevDistrict | Good cars. Real people. | Midvale, Utah",
     template: "%s | RevDistrict",
