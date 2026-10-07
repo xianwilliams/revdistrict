@@ -70,7 +70,7 @@ export default function SellPage() {
             </p>
           </div>
         </aside>
-        <div className="sell-form-panel">
+        <div className="sell-form-panel" id="trade-form">
           <LeadForm kind="trade" />
         </div>
       </section>

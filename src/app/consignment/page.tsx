@@ -55,9 +55,8 @@ export default function ConsignmentPage() {
             </h2>
           </div>
           <p>
-            A considered price. A professional presentation.
-            <br />
-            People who know how to sell cars.
+            You’re getting the best price with professional presentation from
+            people who know how to sell cars.
           </p>
         </div>
         <ol className="process-list" data-stagger>
@@ -137,15 +136,15 @@ export default function ConsignmentPage() {
           {[
             {
               q: "How much will my car sell for?",
-              a: "We’ll discuss the vehicle, condition, market and your goals before agreeing on a listing price. A final sale price is not guaranteed.",
+              a: "We’ll recommend a price based on your car, the market and your goals. You decide the asking price and the lowest offer you’re comfortable accepting. We’ll bring every offer to you, so you always have the final say on whether to accept or decline.",
             },
             {
               q: "What are the fees and terms?",
-              a: "The team will explain the fees, agreement length, vehicle requirements and payment process before you commit. Those details belong in your written consignment agreement.",
+              a: "We keep it simple and transparent. We’ll walk you through the fees, timeline and payment process together, answer your questions and put everything in writing before you get started. You’ll know exactly what to expect while our team takes care of the sale.",
             },
             {
               q: "What if I still have a loan?",
-              a: "Include the approximate payoff when you get in touch. We’ll discuss the lender and title requirements before agreeing to consign the car.",
+              a: "Still have a loan? We work with this all the time, and we’re happy to help. Share your approximate payoff balance, and we’ll walk you through the lender and title steps to keep your sale moving smoothly.",
             },
           ].map((faq) => (
             <details key={faq.q}>

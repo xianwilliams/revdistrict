@@ -174,7 +174,7 @@ test("mobile navigation traps focus, closes, and routes", async ({ page }) => {
     ),
   ).toBeTruthy();
 });
-test("film opens only on request, controls work, and closes with Escape", async ({
+test("film plays with sound on request and closes with Escape", async ({
   page,
 }) => {
   await page.goto("/");
@@ -184,11 +184,42 @@ test("film opens only on request, controls work, and closes with Escape", async 
     "controls",
     "",
   );
-  await expect(page.locator(".film-dialog video")).not.toHaveAttribute(
-    "autoplay",
+  await expect(page.locator(".film-dialog video")).toHaveJSProperty(
+    "paused",
+    false,
+  );
+  await expect(page.locator(".film-dialog video")).toHaveJSProperty(
+    "muted",
+    false,
   );
   await page.keyboard.press("Escape");
   await expect(page.locator(".film-dialog video")).toHaveCount(0);
+});
+test("story film includes audio and starts playing when opened", async ({
+  page,
+}) => {
+  await page.goto("/our-story");
+  await expect(page.locator(".film-dialog video")).toHaveCount(0);
+  await page
+    .getByRole("button", { name: "Play It starts with people." })
+    .click();
+  const video = page.locator(".film-dialog video");
+  await expect(video).toHaveJSProperty("paused", false);
+  await expect(video).toHaveJSProperty("muted", false);
+  await expect
+    .poll(() =>
+      video.evaluate(
+        (element: HTMLVideoElement) =>
+          (
+            element as HTMLVideoElement & {
+              webkitAudioDecodedByteCount: number;
+            }
+          ).webkitAudioDecodedByteCount,
+      ),
+    )
+    .toBeGreaterThan(0);
+  await page.keyboard.press("Escape");
+  await expect(video).toHaveCount(0);
 });
 test("cinematic hero respects reduced motion and exposes a pause control", async ({
   page,
@@ -354,7 +385,9 @@ test("client priorities are prominent and financing stays on RevDistrict", async
   ).toBeTruthy();
   await page.goto("/financing");
   await expect(
-    page.getByRole("link", { name: "Start your application" }),
+    page
+      .locator(".finance-copy")
+      .getByRole("link", { name: "Start your application" }),
   ).toHaveAttribute("href", "/financing/apply");
   await page.goto(car);
   await expect(
@@ -553,8 +586,9 @@ test("original District logo needle follows scroll in both directions and respec
 }) => {
   await page.emulateMedia({ reducedMotion: "no-preference" });
   await page.goto("/our-story");
-  await page.evaluate(() => document.fonts.ready);
   const logo = page.locator(".brand-reveal");
+  await expect(logo).toBeVisible();
+  await page.evaluate(() => document.fonts.ready);
   const needle = page.locator(".district-logo-needle");
   const top = await logo.evaluate(
     (el) => el.getBoundingClientRect().top + scrollY - innerHeight * 0.65,
@@ -579,7 +613,7 @@ test("original District logo needle follows scroll in both directions and respec
   await expect(needle).toHaveCSS("transform", "matrix(1, 0, 0, 1, 0, 0)");
   await expect(page.locator(".brand img")).toHaveAttribute(
     "src",
-    "/images/revdistrict-original.png",
+    "/images/revdistrict-transparent.png",
   );
 });
 

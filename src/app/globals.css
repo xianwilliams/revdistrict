@@ -1782,6 +1782,11 @@ button:active,
   line-height: 1.9;
   margin-top: 18px;
 }
+.faq-link {
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
 .simple-cta {
   display: flex;
   align-items: center;

@@ -29,15 +29,11 @@ export default function StoryPage() {
           </h1>
           <div className="story-hero-bottom">
             <p>
-              A new name. The same love for the drive.
+              Good cars. Real people. A shared love for the drive.
               <br />
               Welcome to RevDistrict.
             </p>
-            <span className="mono">
-              MIDVALE, UTAH
-              <br />
-              FORMERLY THE USED CAR FACTORY
-            </span>
+            <span className="mono">MIDVALE, UTAH</span>
           </div>
         </div>
       </section>
@@ -50,16 +46,16 @@ export default function StoryPage() {
           <h2 data-reveal>
             There’s a story
             <br />
-            behind every key.
+            <span className="gold">behind every key.</span>
           </h2>
           <p>
             A first set of wheels. A growing family. A weekend you’ve been
             planning for years. Finding a car is about where you’re going next.
           </p>
           <p>
-            We started as The Used Car Factory here in Midvale. Today, we’re
-            RevDistrict. The name has changed, but the people, the Utah roots,
-            and the love for cars are still at the center of it.
+            We’re RevDistrict, rooted right here in Midvale. Our people, our
+            Utah community and our love for cars are at the center of everything
+            we do.
           </p>
           <p>
             We want you to know who you’re buying from. Come meet us, take a
@@ -76,7 +72,7 @@ export default function StoryPage() {
           <h2 data-reveal>
             Come for the cars.
             <br />
-            Stay for the people.
+            <span className="gold">Stay for the people.</span>
           </h2>
           <p>
             Before you visit, spend a few minutes with the team. A look at the

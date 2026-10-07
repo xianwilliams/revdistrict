@@ -23,7 +23,7 @@ export const metadata: Metadata = {
     template: "%s | RevDistrict",
   },
   description:
-    "A car you love. People you’ll actually like. Explore used cars, trucks and SUVs at RevDistrict in Midvale, Utah. Formerly The Used Car Factory.",
+    "A car you love. People you’ll actually like. Explore used cars, trucks and SUVs at RevDistrict in Midvale, Utah.",
   robots: {
     index: process.env.SITE_INDEXABLE === "true",
     follow: process.env.SITE_INDEXABLE === "true",

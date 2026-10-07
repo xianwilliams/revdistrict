@@ -1,5 +1,6 @@
 import { Motion } from "@/components/motion";
 import type { Metadata } from "next";
+import Link from "next/link";
 import { Plus, CarFront, FileCheck2, Calculator } from "lucide-react";
 import { AmbientFilm } from "@/components/ambient-film";
 import { PaymentCalculator } from "@/components/payment-calculator";
@@ -93,7 +94,7 @@ export default function FinancingPage() {
             to your driveway.
           </h2>
           <p>
-            We’ll help you understand the next step.
+            Your next step is to get pre-approved.
             <br />
             Bring your questions. That’s what we’re here for.
           </p>
@@ -104,11 +105,14 @@ export default function FinancingPage() {
               <span className="mono">01</span>
               <CarFront size={42} strokeWidth={1} data-icon-draw />
             </div>
-            <h3>Find your car.</h3>
+            <h3>Get Approved.</h3>
             <p>
-              Start with the vehicle that fits your life. Your budget is part of
-              the conversation from the beginning.
+              Let’s get started on your pre-approval. Complete your application
+              and we’ll help you explore a plan that fits your budget.
             </p>
+            <Link className="text-link" href="/financing/apply">
+              Start your application
+            </Link>
           </li>
           <li>
             <div className="process-marker">
@@ -117,8 +121,8 @@ export default function FinancingPage() {
             </div>
             <h3>Explore your options.</h3>
             <p>
-              Complete the secure application with your personal, residence,
-              employment, and optional co-applicant details.
+              We’ll review your application together and talk through the
+              financing options available for your next vehicle.
             </p>
           </li>
           <li>
@@ -163,11 +167,35 @@ export default function FinancingPage() {
             },
             {
               q: "What will I need to apply?",
-              a: "The secure application asks for identity and contact details, residence history, employment and income, and optional trade-in or co-applicant information. The team or lender may ask for supporting documents. Submit sensitive information only through the secure application.",
+              a: (
+                <>
+                  The{" "}
+                  <Link className="faq-link" href="/financing/apply">
+                    secure application
+                  </Link>{" "}
+                  asks for identity and contact details, residence history,
+                  employment and income, and optional trade-in or co-applicant
+                  information. The team or lender may ask for supporting
+                  documents. Submit sensitive information only through the
+                  secure application.
+                </>
+              ),
             },
             {
               q: "Can I trade in my current vehicle?",
-              a: "Yes. Start with our sell or trade form and tell us about your vehicle. Final trade value and any loan payoff are confirmed with the team after inspection.",
+              a: (
+                <>
+                  Yes. Start with our{" "}
+                  <Link
+                    className="faq-link"
+                    href="/sell-your-vehicle#trade-form"
+                  >
+                    sell or trade form
+                  </Link>{" "}
+                  and tell us about your vehicle. Final trade value and any loan
+                  payoff are confirmed with the team after inspection.
+                </>
+              ),
             },
             {
               q: "Do you offer buy here, pay here?",

@@ -37,9 +37,7 @@ export function SiteFooter() {
       </div>
       <div className="footer-bottom">
         <span>© {new Date().getFullYear()} RevDistrict</span>
-        <span className="rebrand-note">
-          Formerly The Used Car Factory. Same Utah roots.
-        </span>
+        <span className="rebrand-note">Rooted in Midvale, Utah.</span>
         <Link href="/privacy-policy">Privacy Policy</Link>
         <a
           href={site.instagram}

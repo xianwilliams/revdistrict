@@ -33,6 +33,9 @@
 .consignment-process {
   background: var(--surface);
 }
+.consignment-process .section-heading > p {
+  max-width: 360px;
+}
 .consignment-intro {
   color: var(--muted);
   margin-top: 25px;

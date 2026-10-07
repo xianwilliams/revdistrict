@@ -9,8 +9,7 @@ export default function PrivacyPage() {
       <h1>Privacy Policy.</h1>
       <p className="legal-intro">
         This notice describes how information is handled on the RevDistrict
-        website, formerly The Used Car Factory. Contact us if you have questions
-        about your information.
+        website. Contact us if you have questions about your information.
       </p>
       <article>
         <h2>Information you provide</h2>

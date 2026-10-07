@@ -55,6 +55,8 @@ export function Film({
             src={film.src}
             poster={film.poster}
             controls
+            autoPlay
+            muted={false}
             playsInline
             preload="metadata"
           />

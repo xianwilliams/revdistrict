@@ -50,6 +50,14 @@ export function DistrictLogo() {
         aria-label="RevDistrict original logo with a scroll-driven gauge needle"
       >
         <defs>
+          {/* Remove the PNG’s near-black backdrop before screen blending. */}
+          <filter id={`${id}-background`} colorInterpolationFilters="sRGB">
+            <feComponentTransfer>
+              <feFuncR type="linear" slope="1.054" intercept="-0.054" />
+              <feFuncG type="linear" slope="1.054" intercept="-0.054" />
+              <feFuncB type="linear" slope="1.054" intercept="-0.054" />
+            </feComponentTransfer>
+          </filter>
           <filter id={`${id}-edge`}>
             <feGaussianBlur stdDeviation="3" />
           </filter>
@@ -76,6 +84,7 @@ export function DistrictLogo() {
           href="/images/revdistrict-original.png"
           width="1254"
           height="1254"
+          filter={`url(#${id}-background)`}
           mask={`url(#${id}-face)`}
         />
         <g className="district-logo-needle">
@@ -83,6 +92,7 @@ export function DistrictLogo() {
             href="/images/revdistrict-original.png"
             width="1254"
             height="1254"
+            filter={`url(#${id}-background)`}
             clipPath={`url(#${id}-needle)`}
           />
         </g>
